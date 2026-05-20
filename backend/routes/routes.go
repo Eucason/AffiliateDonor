@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/affiliatedonor/backend/handlers"
+	"github.com/affiliatedonor/backend/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -75,6 +76,25 @@ func SetupCryptoRoutes(rg *gin.RouterGroup) {
 		crypto.POST("/generate-address", handlers.GenerateCryptoAddress)
 		crypto.POST("/verify-payment", handlers.VerifyCryptoPayment)
 		crypto.GET("/payment/:id/status", handlers.GetCryptoPaymentStatus)
+	}
+}
+
+// SetupBlogRoutes sets up blog-related routes
+func SetupBlogRoutes(rg *gin.RouterGroup) {
+	blogs := rg.Group("/blogs")
+	{
+		blogs.GET("", handlers.GetPublishedBlogs)
+		blogs.GET("/:slug", handlers.GetPublishedBlogBySlug)
+	}
+
+	adminBlogs := rg.Group("/admin/blogs")
+	adminBlogs.Use(middleware.SimpleAdminAuthMiddleware())
+	{
+		adminBlogs.GET("", handlers.GetAdminBlogs)
+		adminBlogs.GET("/:id", handlers.GetAdminBlogByID)
+		adminBlogs.POST("", handlers.CreateBlog)
+		adminBlogs.PUT("/:id", handlers.UpdateBlog)
+		adminBlogs.DELETE("/:id", handlers.DeleteBlog)
 	}
 }
 
