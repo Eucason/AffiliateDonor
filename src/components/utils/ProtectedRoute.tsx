@@ -1,24 +1,27 @@
 import { useEffect } from 'react'
-import { useNavigate, Outlet } from 'react-router-dom'
+import { useLocation, useNavigate, Outlet } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
+import { hasAdminAccess } from '@/config/adminPermissions'
+import AdminLoadingState from '@/components/admin/shared/AdminLoadingState'
 
 export default function ProtectedRoute() {
   const { user, loading } = useAuth()
   const navigate = useNavigate()
-  const hasAdminAccess = Boolean(user) || import.meta.env.DEV || Boolean(import.meta.env.VITE_ADMIN_AUTH_TOKEN)
+  const location = useLocation()
+  const isAdminRoute = location.pathname.startsWith('/admin')
+  const canAccessRoute = isAdminRoute ? hasAdminAccess(user) : Boolean(user)
 
   useEffect(() => {
-    if (!loading && !hasAdminAccess) {
-      // Redirect to home page or login page if not authenticated
+    if (!loading && !canAccessRoute) {
       navigate('/')
     }
-  }, [loading, hasAdminAccess, navigate])
+  }, [loading, canAccessRoute, navigate])
 
   if (loading) {
-    return <div>Loading...</div>
+    return <AdminLoadingState label="Checking access..." className="min-h-screen rounded-none border-0" />
   }
 
-  if (!hasAdminAccess) {
+  if (!canAccessRoute) {
     return null
   }
 
