@@ -49,15 +49,16 @@ type Product struct {
 
 // User represents a platform user
 type User struct {
-	ID              string    `json:"id"`
-	Email           string    `json:"email"`
-	Name            string    `json:"name"`
-	TotalDonations  float64   `json:"total_donations"`
-	TotalPurchases  int       `json:"total_purchases"`
-	CausesSupported int       `json:"causes_supported"`
-	ImpactScore     int       `json:"impact_score"`
-	CreatedAt       time.Time `json:"created_at"`
-	UpdatedAt       time.Time `json:"updated_at"`
+	ID              string    `json:"id" db:"id"`
+	Email           string    `json:"email" db:"email"`
+	Name            string    `json:"name" db:"name"`
+	ProfileImage    string    `json:"profile_image" db:"profile_image"`
+	TotalDonations  float64   `json:"total_donations" db:"total_donations"`
+	TotalPurchases  int       `json:"total_purchases" db:"total_purchases"`
+	CausesSupported int       `json:"causes_supported" db:"causes_supported"`
+	ImpactScore     int       `json:"impact_score" db:"impact_score"`
+	CreatedAt       time.Time `json:"created_at" db:"created_at"`
+	UpdatedAt       time.Time `json:"updated_at" db:"updated_at"`
 }
 
 // AffiliateClick tracks affiliate link clicks

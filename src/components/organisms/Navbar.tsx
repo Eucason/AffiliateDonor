@@ -5,12 +5,14 @@ import { ShoppingCart, Menu, X, Heart, User, LogOut } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 import { useAuth } from '@/context/AuthContext'
 import CartModal from '@/components/organisms/CartModal'
+import LoginModal from '@/components/organisms/LoginModal'
 import Button from '@/components/atoms/Button'
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isCartOpen, setIsCartOpen] = useState(false)
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const { totalItems } = useCart()
   const { user, signOut } = useAuth()
   const location = useLocation()
@@ -117,11 +119,13 @@ export default function Navbar() {
                 </div>
               ) : (
                 <div className="hidden lg:flex items-center space-x-2">
-                  <Link to="/dashboard">
-                    <Button variant="outline" size="sm">
-                      Sign In
-                    </Button>
-                  </Link>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => setIsLoginModalOpen(true)}
+                  >
+                    Sign In
+                  </Button>
                 </div>
               )}
 
@@ -161,11 +165,16 @@ export default function Navbar() {
                   </Link>
                 ))}
                 {!user && (
-                  <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Button variant="primary" className="w-full">
-                      Sign In
-                    </Button>
-                  </Link>
+                  <Button 
+                    variant="primary" 
+                    className="w-full"
+                    onClick={() => {
+                      setIsLoginModalOpen(true)
+                      setIsMobileMenuOpen(false)
+                    }}
+                  >
+                    Sign In
+                  </Button>
                 )}
               </div>
             </motion.div>
@@ -178,6 +187,9 @@ export default function Navbar() {
 
       {/* Cart Modal */}
       <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+
+      {/* Login Modal */}
+      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
     </>
   )
 }
