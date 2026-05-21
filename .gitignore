@@ -31,3 +31,9 @@ dist-ssr
 # Backend
 backend/tmp
 backend/.env
+
+#set-up guides
+GOOGLE_OAUTH_CHECKLIST.md
+GOOGLE_OAUTH_SETUP.md
+SUPABASE_SETUP_QUICK.md
+

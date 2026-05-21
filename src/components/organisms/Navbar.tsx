@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ShoppingCart, Menu, X, Heart, User, LogOut } from 'lucide-react'
+import { ShoppingCart, Menu, X, User, LogOut } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 import { useAuth } from '@/context/AuthContext'
 import CartModal from '@/components/organisms/CartModal'
@@ -50,10 +50,11 @@ export default function Navbar() {
                 whileHover={{ scale: 1.05 }}
                 className="flex items-center space-x-2"
               >
-                <Heart className="w-8 h-8 text-primary-600 fill-primary-600" />
-                <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
-                  AffiliateDonor
-                </span>
+                <img 
+                  src="/affiliatedonor_logo.png" 
+                  alt="AffiliateDonor Logo" 
+                  className="h-10 w-auto"
+                />
               </motion.div>
             </Link>
 
