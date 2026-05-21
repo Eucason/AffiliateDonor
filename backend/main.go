@@ -62,9 +62,12 @@ func main() {
 		
 		// Users
 		routes.SetupUserRoutes(api)
-		
+
 		// Crypto
 		routes.SetupCryptoRoutes(api)
+
+		// Blogs
+		routes.SetupBlogRoutes(api)
 	}
 
 	// WebSocket for real-time updates

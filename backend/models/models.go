@@ -2,6 +2,14 @@ package models
 
 import "time"
 
+// BlogStatus represents the status of a blog post
+type BlogStatus string
+
+const (
+	BlogStatusDraft     BlogStatus = "draft"
+	BlogStatusPublished BlogStatus = "published"
+)
+
 // Cause represents a charitable organization
 type Cause struct {
 	ID          string    `json:"id"`
@@ -17,6 +25,26 @@ type Cause struct {
 	Verified    bool      `json:"verified"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
+}
+
+// BlogPost represents a blog post
+type BlogPost struct {
+	ID               string     `json:"id"`
+	Title            string     `json:"title"`
+	Slug             string     `json:"slug"`
+	Excerpt          string     `json:"excerpt"`
+	Content          string     `json:"content"`
+	ContentFormat    string     `json:"contentFormat"`
+	FeaturedImageURL *string    `json:"featuredImageUrl,omitempty"`
+	Category         *string    `json:"category,omitempty"`
+	Tags             []string   `json:"tags"`
+	AuthorName       string     `json:"authorName"`
+	Status           BlogStatus `json:"status"`
+	SEOTitle         *string    `json:"seoTitle,omitempty"`
+	SEODescription   *string    `json:"seoDescription,omitempty"`
+	CreatedAt        time.Time  `json:"createdAt"`
+	UpdatedAt        time.Time  `json:"updatedAt"`
+	PublishedAt      *time.Time `json:"publishedAt,omitempty"`
 }
 
 // Donation represents a donation transaction

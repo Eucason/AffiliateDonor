@@ -82,6 +82,25 @@ func SetupCryptoRoutes(rg *gin.RouterGroup) {
 	}
 }
 
+// SetupBlogRoutes sets up blog-related routes
+func SetupBlogRoutes(rg *gin.RouterGroup) {
+	blogs := rg.Group("/blogs")
+	{
+		blogs.GET("", handlers.GetPublishedBlogs)
+		blogs.GET("/:slug", handlers.GetPublishedBlogBySlug)
+	}
+
+	adminBlogs := rg.Group("/admin/blogs")
+	adminBlogs.Use(middleware.SimpleAdminAuthMiddleware())
+	{
+		adminBlogs.GET("", handlers.GetAdminBlogs)
+		adminBlogs.GET("/:id", handlers.GetAdminBlogByID)
+		adminBlogs.POST("", handlers.CreateBlog)
+		adminBlogs.PUT("/:id", handlers.UpdateBlog)
+		adminBlogs.DELETE("/:id", handlers.DeleteBlog)
+	}
+}
+
 // SetupWebSocket sets up WebSocket for real-time updates
 func SetupWebSocket(router *gin.Engine) {
 	router.GET("/ws", handlers.HandleWebSocket)
