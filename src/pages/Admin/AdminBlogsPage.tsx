@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { PlusCircle, Loader2 } from 'lucide-react'
+import { PlusCircle } from 'lucide-react'
 import AdminLayout from '@/components/organisms/AdminLayout'
 import AdminBlogTable from '@/components/organisms/AdminBlogTable'
 import Button from '@/components/atoms/Button'

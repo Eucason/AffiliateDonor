@@ -55,7 +55,7 @@ func GetOrCreateUserProfile(ctx context.Context, userID, email string) (*UserPro
 
 	// Try to get existing profile
 	var profile UserProfile
-	err := supabaseClient.DB.From("users").
+	_, err := supabaseClient.From("users").
 		Select("*", "exact", false).
 		Eq("id", userID).
 		Single().
@@ -76,12 +76,17 @@ func GetOrCreateUserProfile(ctx context.Context, userID, email string) (*UserPro
 		ImpactScore:     0,
 	}
 
-	err = supabaseClient.DB.From("users").
+	var createdProfiles []UserProfile
+	_, err = supabaseClient.From("users").
 		Insert([]UserProfile{newProfile}, false, "representation", "", "").
-		ExecuteTo(&newProfile)
+		ExecuteTo(&createdProfiles)
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to create user profile: %w", err)
+	}
+
+	if len(createdProfiles) > 0 {
+		newProfile = createdProfiles[0]
 	}
 
 	return &newProfile, nil
@@ -93,7 +98,7 @@ func UpdateUserProfile(ctx context.Context, profile *UserProfile) error {
 		return fmt.Errorf("Supabase client not initialized")
 	}
 
-	err := supabaseClient.DB.From("users").
+	_, _, err := supabaseClient.From("users").
 		Update(profile, "", "").
 		Eq("id", profile.ID).
 		Execute()
@@ -112,7 +117,7 @@ func GetUserByID(ctx context.Context, userID string) (*UserProfile, error) {
 	}
 
 	var profile UserProfile
-	err := supabaseClient.DB.From("users").
+	_, err := supabaseClient.From("users").
 		Select("*", "exact", false).
 		Eq("id", userID).
 		Single().

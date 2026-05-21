@@ -4,7 +4,7 @@ import { Loader2 } from 'lucide-react'
 import AdminLayout from '@/components/organisms/AdminLayout'
 import BlogForm from '@/components/organisms/BlogForm'
 import { blogAPI } from '@/services/blogAPI'
-import { BlogPost, BlogPostUpdateData } from '@/types/blog'
+import { BlogPost, BlogPostCreateData, BlogPostUpdateData } from '@/types/blog'
 
 export default function AdminBlogEditPage() {
   const { id } = useParams<{ id: string }>()

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"time"
@@ -116,11 +117,15 @@ func BroadcastUpdate(updateType, message string, data interface{}) {
 		"time":    time.Now().Unix(),
 	}
 
-	// Convert to JSON and broadcast
-	// In production: Use proper JSON encoding
+	payloadBytes, err := json.Marshal(payload)
+	if err != nil {
+		log.Printf("WebSocket payload marshal error: %v", err)
+		return
+	}
+
 	for client := range clients {
 		select {
-		case client.send <- []byte(message):
+		case client.send <- payloadBytes:
 		default:
 			close(client.send)
 			delete(clients, client)

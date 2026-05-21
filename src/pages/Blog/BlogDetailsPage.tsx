@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Calendar, User, ArrowLeft, Loader2, Tag } from 'lucide-react'
-import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { pageTransition, slideUp } from '@/utils/motionVariants'
 import { blogAPI } from '@/services/blogAPI'
 import { BlogPost } from '@/types/blog'

@@ -10,7 +10,7 @@ interface LoginFormProps {
   onSignupClick?: () => void
 }
 
-export default function LoginForm({ onSuccess, onClose, onSignupClick }: LoginFormProps) {
+export default function LoginForm({ onSuccess, onSignupClick }: LoginFormProps) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')

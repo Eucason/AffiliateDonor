@@ -6,7 +6,13 @@ export { useAuth } from '@/context/AuthContext'
 
 // Additional auth hooks can be added here
 export const useRequireAuth = () => {
-  const { user, loading } = useContext(AuthContext)!
+  const context = useContext(AuthContext)
+
+  if (!context) {
+    throw new Error('useRequireAuth must be used within AuthProvider')
+  }
+
+  const { user, loading } = context
   
   return {
     user,

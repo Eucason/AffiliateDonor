@@ -15,6 +15,12 @@ apiClient.interceptors.request.use(async (config) => {
   if (session?.access_token) {
     config.headers.Authorization = `Bearer ${session.access_token}`
   }
+
+  const adminToken = import.meta.env.VITE_ADMIN_AUTH_TOKEN
+  if (adminToken && config.url?.includes('/api/admin/')) {
+    config.headers['X-Admin-Token'] = adminToken
+  }
+
   return config
 })
 

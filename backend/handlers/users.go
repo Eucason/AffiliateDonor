@@ -9,7 +9,7 @@ import (
 
 func GetCurrentUser(c *gin.Context) {
 	// Get user ID from auth context
-	authToken, exists := c.Get("auth_token")
+	_, exists := c.Get("auth_token")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": "missing authentication",
@@ -80,11 +80,11 @@ func GetUserImpact(c *gin.Context) {
 	}
 
 	impact := gin.H{
-		"total_donated":      profile.TotalDonations,
-		"causes_supported":   profile.CausesSupported,
-		"impact_score":       profile.ImpactScore,
-		"total_purchases":    profile.TotalPurchases,
-		"supported_causes":   []interface{}{},
+		"total_donated":    profile.TotalDonations,
+		"causes_supported": profile.CausesSupported,
+		"impact_score":     profile.ImpactScore,
+		"total_purchases":  profile.TotalPurchases,
+		"supported_causes": []interface{}{},
 	}
 
 	c.JSON(http.StatusOK, impact)
