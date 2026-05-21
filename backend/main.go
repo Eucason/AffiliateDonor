@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/affiliatedonor/backend/routes"
+	"github.com/affiliatedonor/backend/services"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -14,6 +15,12 @@ func main() {
 	// Load environment variables
 	if err := godotenv.Load(); err != nil {
 		log.Println("No .env file found, using system environment variables")
+	}
+
+	// Initialize Supabase
+	if err := services.InitSupabase(); err != nil {
+		log.Println("Warning: Supabase initialization failed:", err)
+		log.Println("User authentication will not work properly")
 	}
 
 	// Initialize Gin router

@@ -62,6 +62,9 @@ func SetupAffiliateRoutes(rg *gin.RouterGroup) {
 func SetupUserRoutes(rg *gin.RouterGroup) {
 	users := rg.Group("/users")
 	{
+		// All user routes require authentication
+		users.Use(middleware.AuthMiddleware())
+		
 		users.GET("/me", handlers.GetCurrentUser)
 		users.GET("/me/donations", handlers.GetUserDonations)
 		users.GET("/me/impact", handlers.GetUserImpact)

@@ -1,12 +1,15 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { TrendingUp, Heart, ShoppingBag, Award, DollarSign, Users } from 'lucide-react'
 import Card from '@/components/molecules/Card'
 import Button from '@/components/atoms/Button'
 import { useAuth } from '@/context/AuthContext'
+import LoginModal from '@/components/organisms/LoginModal'
 import { pageTransition, slideUp, staggerContainer, staggerItem } from '@/utils/motionVariants'
 
 export default function DashboardPage() {
-  const { user, signIn } = useAuth()
+  const { user } = useAuth()
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
 
   // Mock user data
   const userData = {
@@ -29,17 +32,24 @@ export default function DashboardPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Card className="max-w-md w-full p-8 text-center">
-          <h2 className="text-2xl font-bold mb-4">Sign In to View Dashboard</h2>
-          <p className="text-gray-600 mb-6">
-            Track your impact, view donation history, and manage your profile
-          </p>
-          <Button variant="primary" className="w-full">
-            Sign In with Email
-          </Button>
-        </Card>
-      </div>
+      <>
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <Card className="max-w-md w-full p-8 text-center">
+            <h2 className="text-2xl font-bold mb-4">Sign In to View Dashboard</h2>
+            <p className="text-gray-600 mb-6">
+              Track your impact, view donation history, and manage your profile
+            </p>
+            <Button 
+              variant="primary" 
+              className="w-full"
+              onClick={() => setIsLoginModalOpen(true)}
+            >
+              Sign In
+            </Button>
+          </Card>
+        </div>
+        <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
+      </>
     )
   }
 
