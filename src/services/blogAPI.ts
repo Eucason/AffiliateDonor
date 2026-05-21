@@ -1,5 +1,5 @@
 import apiClient from '@/lib/apiClient'
-import { BlogPost, BlogPostCreateData, BlogPostUpdateData, BlogAPIResponse, BlogAdminAPIResponse } from '@/types/blog'
+import { BlogPost, BlogPostCreateData, BlogPostUpdateData } from '@/types/blog'
 
 export const blogAPI = {
   // Get all published blog posts

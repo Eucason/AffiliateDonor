@@ -28,9 +28,14 @@ func main() {
 
 	// CORS configuration
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://localhost:3000", "http://localhost:5173"}
+	config.AllowOrigins = []string{
+		"http://localhost:3000",
+		"http://127.0.0.1:3000",
+		"http://localhost:5173",
+		"http://127.0.0.1:5173",
+	}
 	config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"}
-	config.AllowHeaders = []string{"Origin", "Content-Type", "Authorization"}
+	config.AllowHeaders = []string{"Origin", "Content-Type", "Authorization", "X-Admin-Token"}
 	config.AllowCredentials = true
 	router.Use(cors.New(config))
 
@@ -47,19 +52,19 @@ func main() {
 	{
 		// Causes
 		routes.SetupCauseRoutes(api)
-		
+
 		// Donations
 		routes.SetupDonationRoutes(api)
-		
+
 		// Products/Shopping
 		routes.SetupProductRoutes(api)
-		
+
 		// Payments
 		routes.SetupPaymentRoutes(api)
-		
+
 		// Affiliates
 		routes.SetupAffiliateRoutes(api)
-		
+
 		// Users
 		routes.SetupUserRoutes(api)
 

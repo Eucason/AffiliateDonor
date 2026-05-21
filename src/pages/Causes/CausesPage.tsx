@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { Search, Filter } from 'lucide-react'
+import { Search } from 'lucide-react'
 import Card from '@/components/molecules/Card'
-import Input from '@/components/atoms/Input'
 import Button from '@/components/atoms/Button'
 import { pageTransition, slideUp, staggerContainer, staggerItem } from '@/utils/motionVariants'
 

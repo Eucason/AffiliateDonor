@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Loader2 } from 'lucide-react'
 import AdminLayout from '@/components/organisms/AdminLayout'
 import BlogForm from '@/components/organisms/BlogForm'
 import { blogAPI } from '@/services/blogAPI'

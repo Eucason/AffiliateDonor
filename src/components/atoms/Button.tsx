@@ -1,11 +1,14 @@
-import { ButtonHTMLAttributes, forwardRef } from 'react'
+import { forwardRef } from 'react'
+import type { ReactNode } from 'react'
 import { motion } from 'framer-motion'
+import type { HTMLMotionProps } from 'framer-motion'
 import { cn } from '@/utils/cn'
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'children'> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost'
   size?: 'sm' | 'md' | 'lg'
   isLoading?: boolean
+  children?: ReactNode
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -27,12 +30,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <motion.button
+        {...props}
         ref={ref}
         className={cn(baseStyles, variants[variant], sizes[size], className)}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         disabled={isLoading || props.disabled}
-        {...props}
       >
         {isLoading ? (
           <div className="spinner mr-2"></div>
