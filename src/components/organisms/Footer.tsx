@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Heart, Facebook, Twitter, Instagram, Linkedin, Mail } from 'lucide-react'
+import { Facebook, Twitter, Instagram, Linkedin, Mail } from 'lucide-react'
 
 export default function Footer() {
   const handleScrollToTop = () => {
@@ -38,7 +38,11 @@ export default function Footer() {
               onClick={handleScrollToTop}
               className="flex items-center space-x-2 mb-4"
             >
-              <Heart className="w-8 h-8 text-primary-500 fill-primary-500" />
+              <img 
+                src="/affiliatedonor_logo.png" 
+                alt="AffiliateDonor Logo" 
+                className="h-8 w-auto"
+              />
               <span className="text-xl font-bold text-white">AffiliateDonor</span>
             </Link>
             <p className="text-sm mb-4">
