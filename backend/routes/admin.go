@@ -86,5 +86,26 @@ func SetupAdminRoutes(rg *gin.RouterGroup) {
 		}
 
 		admin.GET("/exports", adminhandlers.GetAdminExports)
+
+		settings := admin.Group("/settings")
+		{
+			settings.GET("", adminhandlers.GetAdminSettings)
+			settings.PUT("", adminhandlers.UpdateAdminSettings)
+		}
+
+		notifications := admin.Group("/notifications")
+		{
+			notifications.GET("", adminhandlers.GetAdminNotifications)
+			notifications.PATCH("/:id", adminhandlers.UpdateAdminNotificationStatus)
+			notifications.POST("/read-all", adminhandlers.MarkAllAdminNotificationsRead)
+		}
+
+		admin.GET("/audit-logs", adminhandlers.GetAdminAuditLogs)
+
+		approvals := admin.Group("/approvals")
+		{
+			approvals.GET("", adminhandlers.GetAdminApprovals)
+			approvals.PATCH("/:id", adminhandlers.ReviewAdminApproval)
+		}
 	}
 }

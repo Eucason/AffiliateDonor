@@ -517,3 +517,208 @@ type AdminReportsResponse struct {
 	Exports             []AdminReportExportItem              `json:"exports"`
 	FilterOptions       AdminReportFilterOptions             `json:"filterOptions"`
 }
+
+// AdminNotificationPreference captures admin alert delivery settings.
+type AdminNotificationPreference struct {
+	Key         string `json:"key"`
+	Label       string `json:"label"`
+	Description string `json:"description"`
+	Email       bool   `json:"email"`
+	InApp       bool   `json:"inApp"`
+}
+
+// AdminGeneralSettings captures platform-wide defaults.
+type AdminGeneralSettings struct {
+	SiteName           string `json:"siteName"`
+	SupportEmail       string `json:"supportEmail"`
+	Timezone           string `json:"timezone"`
+	DefaultCurrency    string `json:"defaultCurrency"`
+	MaintenanceMode    bool   `json:"maintenanceMode"`
+	MaintenanceMessage string `json:"maintenanceMessage"`
+}
+
+// AdminBrandingSettings captures admin-managed brand assets.
+type AdminBrandingSettings struct {
+	LogoURL               string `json:"logoUrl"`
+	FaviconURL            string `json:"faviconUrl"`
+	PrimaryColor          string `json:"primaryColor"`
+	SecondaryColor        string `json:"secondaryColor"`
+	SocialPreviewImageURL string `json:"socialPreviewImageUrl"`
+}
+
+// AdminPaymentSettings captures payment method and donation defaults.
+type AdminPaymentSettings struct {
+	EnabledMethods  []string `json:"enabledMethods"`
+	DefaultCurrency string   `json:"defaultCurrency"`
+	MinimumDonation float64  `json:"minimumDonation"`
+	StripeVisible   bool     `json:"stripeVisible"`
+	PaypalVisible   bool     `json:"paypalVisible"`
+	CryptoVisible   bool     `json:"cryptoVisible"`
+	WebhookStatus   string   `json:"webhookStatus"`
+}
+
+// AdminSocialLinksSettings captures public social destinations.
+type AdminSocialLinksSettings struct {
+	Facebook  string `json:"facebook"`
+	XTwitter  string `json:"xTwitter"`
+	Instagram string `json:"instagram"`
+	LinkedIn  string `json:"linkedIn"`
+	Youtube   string `json:"youtube"`
+}
+
+// AdminFooterLink captures one footer link.
+type AdminFooterLink struct {
+	ID    string `json:"id"`
+	Label string `json:"label"`
+	URL   string `json:"url"`
+}
+
+// AdminFooterLinkGroup captures grouped footer navigation.
+type AdminFooterLinkGroup struct {
+	ID    string            `json:"id"`
+	Title string            `json:"title"`
+	Links []AdminFooterLink `json:"links"`
+}
+
+// AdminFooterSettings captures footer content and newsletter visibility.
+type AdminFooterSettings struct {
+	ContactEmail      string                 `json:"contactEmail"`
+	ContactPhone      string                 `json:"contactPhone"`
+	Address           string                 `json:"address"`
+	NewsletterEnabled bool                   `json:"newsletterEnabled"`
+	LinkGroups        []AdminFooterLinkGroup `json:"linkGroups"`
+	LegalLinks        []AdminFooterLink      `json:"legalLinks"`
+}
+
+// AdminAccountSettings captures the current admin profile shell settings.
+type AdminAccountSettings struct {
+	DisplayName  string `json:"displayName"`
+	Email        string `json:"email"`
+	AvatarURL    string `json:"avatarUrl"`
+	Role         string `json:"role"`
+	AuthProvider string `json:"authProvider"`
+}
+
+// AdminRolePermissionOverview describes practical admin role access.
+type AdminRolePermissionOverview struct {
+	Role        string   `json:"role"`
+	Label       string   `json:"label"`
+	Description string   `json:"description"`
+	Permissions []string `json:"permissions"`
+}
+
+// AdminSecuritySettings captures practical security policy controls.
+type AdminSecuritySettings struct {
+	SessionTimeoutMinutes int                           `json:"sessionTimeoutMinutes"`
+	RequireTwoFactor      bool                          `json:"requireTwoFactor"`
+	PasswordPolicy        string                        `json:"passwordPolicy"`
+	AuditRetentionDays    int                           `json:"auditRetentionDays"`
+	Roles                 []AdminRolePermissionOverview `json:"roles"`
+}
+
+// AdminSettings is the full settings payload.
+type AdminSettings struct {
+	General       AdminGeneralSettings          `json:"general"`
+	Branding      AdminBrandingSettings         `json:"branding"`
+	Payments      AdminPaymentSettings          `json:"payments"`
+	Social        AdminSocialLinksSettings      `json:"social"`
+	Footer        AdminFooterSettings           `json:"footer"`
+	Account       AdminAccountSettings          `json:"account"`
+	Security      AdminSecuritySettings         `json:"security"`
+	Notifications []AdminNotificationPreference `json:"notifications"`
+	UpdatedAt     time.Time                     `json:"updatedAt"`
+	UpdatedBy     string                        `json:"updatedBy"`
+}
+
+// AdminSettingsSummary provides settings dashboard rollups.
+type AdminSettingsSummary struct {
+	MaintenanceMode               bool      `json:"maintenanceMode"`
+	EnabledPaymentMethodCount     int       `json:"enabledPaymentMethodCount"`
+	UnreadCriticalPreferenceCount int       `json:"unreadCriticalPreferenceCount"`
+	RoleCount                     int       `json:"roleCount"`
+	LastUpdatedAt                 time.Time `json:"lastUpdatedAt"`
+}
+
+// AdminNotification is an admin alert record.
+type AdminNotification struct {
+	ID          string     `json:"id"`
+	Type        string     `json:"type"`
+	Title       string     `json:"title"`
+	Summary     string     `json:"summary"`
+	Status      string     `json:"status"`
+	Severity    string     `json:"severity"`
+	SourceLabel string     `json:"sourceLabel"`
+	SourcePath  string     `json:"sourcePath"`
+	CreatedAt   time.Time  `json:"createdAt"`
+	ReadAt      *time.Time `json:"readAt,omitempty"`
+}
+
+// AdminNotificationSummary provides alert counts.
+type AdminNotificationSummary struct {
+	TotalCount    int `json:"totalCount"`
+	UnreadCount   int `json:"unreadCount"`
+	CriticalCount int `json:"criticalCount"`
+	ArchivedCount int `json:"archivedCount"`
+}
+
+// AdminAuditLog captures one admin action event.
+type AdminAuditLog struct {
+	ID          string                 `json:"id"`
+	Actor       string                 `json:"actor"`
+	ActorRole   string                 `json:"actorRole"`
+	Action      string                 `json:"action"`
+	EntityType  string                 `json:"entityType"`
+	EntityLabel string                 `json:"entityLabel"`
+	EntityID    string                 `json:"entityId"`
+	Timestamp   time.Time              `json:"timestamp"`
+	IPAddress   string                 `json:"ipAddress"`
+	Device      string                 `json:"device"`
+	Severity    string                 `json:"severity"`
+	Before      map[string]interface{} `json:"before"`
+	After       map[string]interface{} `json:"after"`
+	Metadata    map[string]string      `json:"metadata"`
+}
+
+// AdminAuditSummary provides audit counts.
+type AdminAuditSummary struct {
+	TotalCount          int `json:"totalCount"`
+	CriticalCount       int `json:"criticalCount"`
+	SettingsChangeCount int `json:"settingsChangeCount"`
+	ApprovalActionCount int `json:"approvalActionCount"`
+}
+
+// AdminApprovalComment captures reviewer/requester discussion.
+type AdminApprovalComment struct {
+	ID        string    `json:"id"`
+	Author    string    `json:"author"`
+	Body      string    `json:"body"`
+	CreatedAt time.Time `json:"createdAt"`
+}
+
+// AdminApprovalRequest captures admin approval workflow rows.
+type AdminApprovalRequest struct {
+	ID                 string                 `json:"id"`
+	Type               string                 `json:"type"`
+	Status             string                 `json:"status"`
+	Priority           string                 `json:"priority"`
+	Title              string                 `json:"title"`
+	Summary            string                 `json:"summary"`
+	RequestedBy        string                 `json:"requestedBy"`
+	SubmittedAt        time.Time              `json:"submittedAt"`
+	RelatedEntityID    string                 `json:"relatedEntityId"`
+	RelatedEntityLabel string                 `json:"relatedEntityLabel"`
+	RelatedEntityPath  string                 `json:"relatedEntityPath"`
+	Impact             string                 `json:"impact"`
+	Reviewer           string                 `json:"reviewer,omitempty"`
+	ReviewedAt         *time.Time             `json:"reviewedAt,omitempty"`
+	Comments           []AdminApprovalComment `json:"comments"`
+}
+
+// AdminApprovalSummary provides approval queue counts.
+type AdminApprovalSummary struct {
+	TotalCount    int `json:"totalCount"`
+	PendingCount  int `json:"pendingCount"`
+	ApprovedCount int `json:"approvedCount"`
+	RejectedCount int `json:"rejectedCount"`
+	UrgentCount   int `json:"urgentCount"`
+}

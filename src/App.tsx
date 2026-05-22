@@ -41,6 +41,10 @@ import AdminDonorReportsPage from './pages/Admin/AdminDonorReportsPage'
 import AdminContentReportsPage from './pages/Admin/AdminContentReportsPage'
 import AdminProductReportsPage from './pages/Admin/AdminProductReportsPage'
 import AdminExportsPage from './pages/Admin/AdminExportsPage'
+import AdminApprovalsPage from './pages/Admin/AdminApprovalsPage'
+import AdminAuditLogsPage from './pages/Admin/AdminAuditLogsPage'
+import AdminNotificationsPage from './pages/Admin/AdminNotificationsPage'
+import AdminSettingsPage from './pages/Admin/AdminSettingsPage'
 import AdminUserDetailsPage from './pages/Admin/AdminUserDetailsPage'
 import AdminUsersPage from './pages/Admin/AdminUsersPage'
 import AboutPage from './pages/About/AboutPage'
@@ -57,15 +61,6 @@ import ScrollToTop from './components/utils/ScrollToTop'
 import ProtectedRoute from './components/utils/ProtectedRoute'
 import { CartProvider } from './context/CartContext'
 import { AuthProvider } from './context/AuthContext'
-import AdminPlaceholderPage from './components/admin/shared/AdminPlaceholderPage'
-import { resolveAdminRouteMeta } from './config/adminRoutes'
-
-function adminPlaceholder(path: string) {
-  const routeMeta = resolveAdminRouteMeta(path)
-
-  return <AdminPlaceholderPage title={routeMeta.title} description={routeMeta.description} />
-}
-
 function App() {
   const location = useLocation()
   const isAdminRoute = location.pathname.startsWith('/admin')
@@ -132,10 +127,10 @@ function App() {
                   <Route path="/admin/reports/content" element={<AdminContentReportsPage />} />
                   <Route path="/admin/reports/products" element={<AdminProductReportsPage />} />
                   <Route path="/admin/exports" element={<AdminExportsPage />} />
-                  <Route path="/admin/notifications" element={adminPlaceholder('/admin/notifications')} />
-                  <Route path="/admin/settings" element={adminPlaceholder('/admin/settings')} />
-                  <Route path="/admin/audit-logs" element={adminPlaceholder('/admin/audit-logs')} />
-                  <Route path="/admin/approvals" element={adminPlaceholder('/admin/approvals')} />
+                  <Route path="/admin/notifications" element={<AdminNotificationsPage />} />
+                  <Route path="/admin/settings" element={<AdminSettingsPage />} />
+                  <Route path="/admin/audit-logs" element={<AdminAuditLogsPage />} />
+                  <Route path="/admin/approvals" element={<AdminApprovalsPage />} />
                   <Route path="/admin/search" element={<AdminSearchPage />} />
                 </Route>
               </Routes>

@@ -30,13 +30,6 @@ export const adminNavigationGroups: AdminNavigationGroup[] = [
         description: 'Campaign publishing, progress, and linked donations',
         permission: 'causes:read',
       },
-      {
-        label: 'Approvals',
-        path: '/admin/approvals',
-        icon: 'ClipboardCheck',
-        description: 'Campaign, content, and admin review queue',
-        permission: 'approvals:read',
-      },
     ],
   },
   {
@@ -184,6 +177,13 @@ export const adminNavigationGroups: AdminNavigationGroup[] = [
   {
     label: 'System',
     items: [
+      {
+        label: 'Approvals',
+        path: '/admin/approvals',
+        icon: 'ClipboardCheck',
+        description: 'Campaign, content, and admin review queue',
+        permission: 'approvals:read',
+      },
       {
         label: 'Notifications',
         path: '/admin/notifications',
