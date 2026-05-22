@@ -17,5 +17,14 @@ func SetupAdminRoutes(rg *gin.RouterGroup) {
 			donations.GET("/:id", adminhandlers.GetAdminDonation)
 			donations.POST("/:id/reviewed", adminhandlers.MarkAdminDonationReviewed)
 		}
+
+		causes := admin.Group("/causes")
+		{
+			causes.GET("", adminhandlers.GetAdminCauses)
+			causes.GET("/:id", adminhandlers.GetAdminCause)
+			causes.POST("", adminhandlers.CreateAdminCause)
+			causes.PUT("/:id", adminhandlers.UpdateAdminCause)
+			causes.PATCH("/:id/status", adminhandlers.UpdateAdminCauseStatus)
+		}
 	}
 }
