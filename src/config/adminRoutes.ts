@@ -179,6 +179,61 @@ export const adminRouteMetadata: AdminRouteMeta[] = [
     permission: 'reports:read',
   },
   {
+    path: '/admin/reports/donations',
+    title: 'Donation Reports',
+    description: 'Analyze donation trends by period, campaign, status, and payment method.',
+    breadcrumbs: [
+      { label: 'Admin', path: '/admin' },
+      { label: 'Reports', path: '/admin/reports' },
+      { label: 'Donations' },
+    ],
+    permission: 'reports:read',
+  },
+  {
+    path: '/admin/reports/campaigns',
+    title: 'Campaign Reports',
+    description: 'Compare campaign funding progress, donors, and average donation.',
+    breadcrumbs: [
+      { label: 'Admin', path: '/admin' },
+      { label: 'Reports', path: '/admin/reports' },
+      { label: 'Campaigns' },
+    ],
+    permission: 'reports:read',
+  },
+  {
+    path: '/admin/reports/donors',
+    title: 'Donor Reports',
+    description: 'Track donor growth, returning donors, and giving averages.',
+    breadcrumbs: [
+      { label: 'Admin', path: '/admin' },
+      { label: 'Reports', path: '/admin/reports' },
+      { label: 'Donors' },
+    ],
+    permission: 'reports:read',
+  },
+  {
+    path: '/admin/reports/content',
+    title: 'Content Reports',
+    description: 'Review blog and CMS content performance signals.',
+    breadcrumbs: [
+      { label: 'Admin', path: '/admin' },
+      { label: 'Reports', path: '/admin/reports' },
+      { label: 'Content' },
+    ],
+    permission: 'reports:read',
+  },
+  {
+    path: '/admin/reports/products',
+    title: 'Product Reports',
+    description: 'Analyze affiliate and merch clicks, conversions, and contribution.',
+    breadcrumbs: [
+      { label: 'Admin', path: '/admin' },
+      { label: 'Reports', path: '/admin/reports' },
+      { label: 'Products' },
+    ],
+    permission: 'reports:read',
+  },
+  {
     path: '/admin/exports',
     title: 'Exports',
     description: 'Prepare and download admin reports.',

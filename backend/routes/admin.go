@@ -74,5 +74,17 @@ func SetupAdminRoutes(rg *gin.RouterGroup) {
 			products.PATCH("/:id/inventory", adminhandlers.UpdateAdminProductInventory)
 			products.DELETE("/:id", adminhandlers.DeleteAdminProduct)
 		}
+
+		reports := admin.Group("/reports")
+		{
+			reports.GET("", adminhandlers.GetAdminReports)
+			reports.GET("/donations", adminhandlers.GetAdminDonationReport)
+			reports.GET("/campaigns", adminhandlers.GetAdminCampaignReport)
+			reports.GET("/donors", adminhandlers.GetAdminDonorReport)
+			reports.GET("/content", adminhandlers.GetAdminContentReport)
+			reports.GET("/products", adminhandlers.GetAdminProductReport)
+		}
+
+		admin.GET("/exports", adminhandlers.GetAdminExports)
 	}
 }
