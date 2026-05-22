@@ -60,5 +60,19 @@ func SetupAdminRoutes(rg *gin.RouterGroup) {
 			media.PUT("/:id", adminhandlers.UpdateAdminMediaAsset)
 			media.DELETE("/:id", adminhandlers.DeleteAdminMediaAsset)
 		}
+
+		products := admin.Group("/products")
+		{
+			products.GET("", adminhandlers.GetAdminProducts)
+			products.POST("", adminhandlers.CreateAdminProduct)
+			products.GET("/categories", adminhandlers.GetAdminProductCategories)
+			products.POST("/categories", adminhandlers.SaveAdminProductCategory)
+			products.PUT("/categories/:id", adminhandlers.SaveAdminProductCategory)
+			products.GET("/:id", adminhandlers.GetAdminProduct)
+			products.PUT("/:id", adminhandlers.UpdateAdminProduct)
+			products.PATCH("/:id/status", adminhandlers.UpdateAdminProductStatus)
+			products.PATCH("/:id/inventory", adminhandlers.UpdateAdminProductInventory)
+			products.DELETE("/:id", adminhandlers.DeleteAdminProduct)
+		}
 	}
 }

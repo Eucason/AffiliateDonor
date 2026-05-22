@@ -25,10 +25,15 @@ import AdminFooterContentPage from './pages/Admin/AdminFooterContentPage'
 import AdminHomepageContentPage from './pages/Admin/AdminHomepageContentPage'
 import AdminImpactStoriesPage from './pages/Admin/AdminImpactStoriesPage'
 import AdminMediaLibraryPage from './pages/Admin/AdminMediaLibraryPage'
+import AdminAffiliateProductsPage from './pages/Admin/AdminAffiliateProductsPage'
 import AdminSearchPage from './pages/Admin/AdminSearchPage'
+import AdminMerchProductsPage from './pages/Admin/AdminMerchProductsPage'
 import AdminTestimonialsPage from './pages/Admin/AdminTestimonialsPage'
 import AdminMessageDetailsPage from './pages/Admin/AdminMessageDetailsPage'
 import AdminMessagesPage from './pages/Admin/AdminMessagesPage'
+import AdminProductCategoriesPage from './pages/Admin/AdminProductCategoriesPage'
+import AdminProductCreatePage from './pages/Admin/AdminProductCreatePage'
+import AdminProductEditPage from './pages/Admin/AdminProductEditPage'
 import AdminUserDetailsPage from './pages/Admin/AdminUserDetailsPage'
 import AdminUsersPage from './pages/Admin/AdminUsersPage'
 import AboutPage from './pages/About/AboutPage'
@@ -108,11 +113,11 @@ function App() {
                   <Route path="/admin/users/:id" element={<AdminUserDetailsPage />} />
                   <Route path="/admin/messages" element={<AdminMessagesPage />} />
                   <Route path="/admin/messages/:id" element={<AdminMessageDetailsPage />} />
-                  <Route path="/admin/products/affiliate" element={adminPlaceholder('/admin/products/affiliate')} />
-                  <Route path="/admin/products/merch" element={adminPlaceholder('/admin/products/merch')} />
-                  <Route path="/admin/products/categories" element={adminPlaceholder('/admin/products/categories')} />
-                  <Route path="/admin/products/new" element={adminPlaceholder('/admin/products/new')} />
-                  <Route path="/admin/products/:id/edit" element={adminPlaceholder('/admin/products/:id/edit')} />
+                  <Route path="/admin/products/affiliate" element={<AdminAffiliateProductsPage />} />
+                  <Route path="/admin/products/merch" element={<AdminMerchProductsPage />} />
+                  <Route path="/admin/products/categories" element={<AdminProductCategoriesPage />} />
+                  <Route path="/admin/products/new" element={<AdminProductCreatePage />} />
+                  <Route path="/admin/products/:id/edit" element={<AdminProductEditPage />} />
                   <Route path="/admin/reports" element={adminPlaceholder('/admin/reports')} />
                   <Route path="/admin/reports/donations" element={adminPlaceholder('/admin/reports/donations')} />
                   <Route path="/admin/reports/campaigns" element={adminPlaceholder('/admin/reports/campaigns')} />

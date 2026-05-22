@@ -1,71 +1,72 @@
+import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
-import { ShoppingCart, Heart } from 'lucide-react'
+import { Heart, Loader2, PackageSearch, Search, ShoppingCart } from 'lucide-react'
 import Card from '@/components/molecules/Card'
 import Button from '@/components/atoms/Button'
 import { useCart } from '@/context/CartContext'
+import { productCatalogAPI, getPublicProductCategories } from '@/services/productCatalogAPI'
+import type { PublicProduct } from '@/services/productCatalogAPI'
 import { pageTransition, slideUp, staggerContainer, staggerItem } from '@/utils/motionVariants'
 
-const merchProducts = [
-  {
-    id: 'merch-1',
-    name: 'AffiliateDonor T-Shirt',
-    price: 24.99,
-    image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800',
-    description: '100% organic cotton, eco-friendly print',
-    causeId: '1',
-    causeName: 'Clean Water Initiative',
-  },
-  {
-    id: 'merch-2',
-    name: 'Impact Hoodie',
-    price: 44.99,
-    image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800',
-    description: 'Comfortable fleece, perfect for any season',
-    causeId: '2',
-    causeName: 'Education for All',
-  },
-  {
-    id: 'merch-3',
-    name: 'Donation Mug',
-    price: 14.99,
-    image: 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800',
-    description: 'Ceramic mug with inspiring message',
-    causeId: '1',
-    causeName: 'Clean Water Initiative',
-  },
-  {
-    id: 'merch-4',
-    name: 'Eco Tote Bag',
-    price: 19.99,
-    image: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=800',
-    description: 'Reusable canvas bag with logo',
-    causeId: '3',
-    causeName: 'Wildlife Conservation',
-  },
-  {
-    id: 'merch-5',
-    name: 'Supporter Cap',
-    price: 18.99,
-    image: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800',
-    description: 'Adjustable cap with embroidered logo',
-    causeId: '2',
-    causeName: 'Education for All',
-  },
-  {
-    id: 'merch-6',
-    name: 'Sticker Pack',
-    price: 7.99,
-    image: 'https://images.unsplash.com/photo-1611073539857-7f2cd1d58357?w=800',
-    description: 'Set of 10 waterproof stickers',
-    causeId: '4',
-    causeName: 'Hunger Relief',
-  },
-]
+const currencyFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+})
 
 export default function MerchPage() {
   const { addItem } = useCart()
+  const [products, setProducts] = useState<PublicProduct[]>([])
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('All')
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const handleAddToCart = (product: typeof merchProducts[0]) => {
+  useEffect(() => {
+    let active = true
+
+    const loadProducts = async () => {
+      try {
+        setLoading(true)
+        setError(null)
+        const publishedProducts = await productCatalogAPI.getPublishedProducts('merch')
+        if (active) {
+          setProducts(publishedProducts)
+        }
+      } catch (requestError) {
+        console.error('Failed to load merch products:', requestError)
+        if (active) {
+          setError('Merchandise could not be loaded right now.')
+        }
+      } finally {
+        if (active) {
+          setLoading(false)
+        }
+      }
+    }
+
+    loadProducts()
+
+    return () => {
+      active = false
+    }
+  }, [])
+
+  const categories = useMemo(() => getPublicProductCategories(products), [products])
+  const filteredProducts = useMemo(
+    () =>
+      products.filter((product) => {
+        const search = searchQuery.trim().toLowerCase()
+        const searchable = [product.name, product.brand, product.category, product.causeName, product.description]
+          .join(' ')
+          .toLowerCase()
+        const matchesSearch = !search || searchable.includes(search)
+        const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory
+        return matchesSearch && matchesCategory
+      }),
+    [products, searchQuery, selectedCategory],
+  )
+
+  const handleAddToCart = (product: PublicProduct) => {
     addItem({
       id: product.id,
       name: product.name,
@@ -75,83 +76,130 @@ export default function MerchPage() {
       causeName: product.causeName,
     })
 
-    // Show success animation (you could use a toast notification here)
     alert(`${product.name} added to cart!`)
   }
 
   return (
     <motion.div {...pageTransition} variants={slideUp} className="min-h-screen bg-gray-50">
-      {/* Hero */}
-      <section className="bg-gradient-to-r from-primary-600 via-secondary-600 to-primary-600 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl font-bold mb-6">Official Merchandise</h1>
-          <p className="text-xl opacity-90 max-w-2xl mx-auto">
-            Show your support and spread awareness. 100% of profits go directly to causes.
+      <section className="bg-gradient-to-r from-primary-600 via-secondary-600 to-primary-600 py-20 text-white">
+        <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+          <h1 className="mb-6 text-5xl font-bold">Official Merchandise</h1>
+          <p className="mx-auto max-w-2xl text-xl opacity-90">
+            Show your support and spread awareness. Profits go directly to causes.
           </p>
         </div>
       </section>
 
-      {/* Products Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <motion.div
-          variants={staggerContainer}
-          initial="initial"
-          animate="animate"
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          {merchProducts.map((product) => (
-            <motion.div key={product.id} variants={staggerItem}>
-              <Card className="h-full flex flex-col group">
-                <div className="relative h-80 overflow-hidden">
-                  <motion.img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all" />
-                </div>
-                <div className="p-6 flex-1 flex flex-col">
-                  <h3 className="text-xl font-bold mb-2">{product.name}</h3>
-                  <p className="text-gray-600 text-sm mb-3">{product.description}</p>
-                  <div className="flex items-center gap-2 mb-4 text-sm text-primary-600">
-                    <Heart className="w-4 h-4 fill-current" />
-                    <span>Supports {product.causeName}</span>
-                  </div>
-                  
-                  <div className="mt-auto">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-2xl font-bold text-gray-900">
-                        ${product.price}
-                      </span>
-                      <span className="text-xs text-gray-500 bg-green-100 px-2 py-1 rounded">
-                        100% to cause
-                      </span>
-                    </div>
-                    <Button
-                      variant="primary"
-                      className="w-full"
-                      onClick={() => handleAddToCart(product)}
-                    >
-                      <ShoppingCart className="w-5 h-5 mr-2" />
-                      Add to Cart
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            </motion.div>
-          ))}
-        </motion.div>
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div className="rounded-xl bg-white p-6 shadow-lg">
+          <div className="flex flex-col gap-4 md:flex-row">
+            <div className="flex-1">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search merch, causes, categories..."
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  className="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-4 focus:border-transparent focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+            </div>
+            <div className="flex gap-2 overflow-x-auto">
+              {categories.map((category) => (
+                <Button
+                  key={category}
+                  variant={selectedCategory === category ? 'primary' : 'outline'}
+                  size="sm"
+                  onClick={() => setSelectedCategory(category)}
+                >
+                  {category}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </div>
       </section>
 
-      {/* Info Banner */}
-      <section className="bg-primary-600 text-white py-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Every Purchase Makes a Difference</h2>
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        {loading ? (
+          <div className="flex min-h-64 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600">
+            <Loader2 className="mr-2 h-5 w-5 animate-spin text-primary-600" />
+            Loading merchandise...
+          </div>
+        ) : error ? (
+          <div className="rounded-lg border border-red-200 bg-red-50 p-5 text-sm font-medium text-red-700">{error}</div>
+        ) : filteredProducts.length === 0 ? (
+          <div className="flex min-h-64 flex-col items-center justify-center rounded-lg border border-dashed border-gray-300 bg-white px-6 py-12 text-center">
+            <PackageSearch className="mb-3 h-10 w-10 text-gray-400" />
+            <h2 className="text-lg font-semibold text-gray-900">No merchandise found</h2>
+            <p className="mt-2 max-w-md text-sm text-gray-600">Published merch products from admin will appear here.</p>
+          </div>
+        ) : (
+          <motion.div
+            variants={staggerContainer}
+            initial="initial"
+            animate="animate"
+            className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
+          >
+            {filteredProducts.map((product) => {
+              const outOfStock = product.inventoryQuantity !== undefined && product.inventoryQuantity <= 0
+
+              return (
+                <motion.div key={product.id} variants={staggerItem}>
+                  <Card className="group flex h-full flex-col">
+                    <div className="relative h-80 overflow-hidden">
+                      <motion.img
+                        src={product.image}
+                        alt={product.name}
+                        className="h-full w-full object-cover"
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                      <div className="absolute inset-0 bg-black/0 transition-all group-hover:bg-black/20" />
+                    </div>
+                    <div className="flex flex-1 flex-col p-6">
+                      <div className="mb-1 text-sm text-gray-500">{product.brand}</div>
+                      <h3 className="mb-2 text-xl font-bold">{product.name}</h3>
+                      <p className="mb-3 text-sm text-gray-600">{product.description}</p>
+                      <div className="mb-4 flex items-center gap-2 text-sm text-primary-600">
+                        <Heart className="h-4 w-4 fill-current" />
+                        <span>Supports {product.causeName}</span>
+                      </div>
+
+                      <div className="mt-auto">
+                        <div className="mb-4 flex items-center justify-between">
+                          <span className="text-2xl font-bold text-gray-900">
+                            {currencyFormatter.format(product.price)}
+                          </span>
+                          <span className={`rounded px-2 py-1 text-xs ${outOfStock ? 'bg-red-100 text-red-700' : 'bg-green-100 text-gray-600'}`}>
+                            {outOfStock ? 'Out of stock' : `${product.donationPercent}% to cause`}
+                          </span>
+                        </div>
+                        <Button
+                          variant="primary"
+                          className="w-full"
+                          onClick={() => handleAddToCart(product)}
+                          disabled={outOfStock}
+                        >
+                          <ShoppingCart className="mr-2 h-5 w-5" />
+                          {outOfStock ? 'Out of Stock' : 'Add to Cart'}
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
+                </motion.div>
+              )
+            })}
+          </motion.div>
+        )}
+      </section>
+
+      <section className="bg-primary-600 py-12 text-white">
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+          <h2 className="mb-4 text-3xl font-bold">Every Purchase Makes a Difference</h2>
           <p className="text-lg opacity-90">
-            All profits from merchandise sales go directly to supporting our partner causes.
-            When you wear our merch, you're not just showing support—you're creating real impact.
+            Merchandise profits support partner causes. When you wear our merch, you are helping create real impact.
           </p>
         </div>
       </section>

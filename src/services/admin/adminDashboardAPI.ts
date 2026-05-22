@@ -1,6 +1,12 @@
 import { blogAPI } from '@/services/blogAPI'
+import { adminProductsAPI } from '@/services/admin/adminProductsAPI'
+import type { AdminProduct } from '@/types/adminProduct'
 import type { BlogPost } from '@/types/blog'
-import type { AdminDashboardContentItem, AdminDashboardSnapshot } from '@/types/adminDashboard'
+import type {
+  AdminDashboardContentItem,
+  AdminDashboardProductActivity,
+  AdminDashboardSnapshot,
+} from '@/types/adminDashboard'
 
 const currencyFormatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -10,7 +16,7 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
 
 export const adminDashboardAPI = {
   async getSnapshot(): Promise<AdminDashboardSnapshot> {
-    const posts = await loadBlogPosts()
+    const [posts, productActivity] = await Promise.all([loadBlogPosts(), loadProductActivity()])
     const draftPosts = posts.filter((post) => post.status === 'draft').length
     const recentPosts = [...posts]
       .sort((first, second) => new Date(second.updatedAt).getTime() - new Date(first.updatedAt).getTime())
@@ -177,32 +183,7 @@ export const adminDashboardAPI = {
         },
       ],
       contentActivity: contentActivity.slice(0, 5),
-      productActivity: [
-        {
-          id: 'p1',
-          name: 'Eco-Friendly Water Bottle',
-          type: 'affiliate',
-          clicks: 1324,
-          conversions: 86,
-          estimatedContribution: 2140,
-        },
-        {
-          id: 'merch-1',
-          name: 'AffiliateDonor T-Shirt',
-          type: 'merch',
-          clicks: 942,
-          conversions: 117,
-          estimatedContribution: 2925,
-        },
-        {
-          id: 'p3',
-          name: 'Solar Power Bank',
-          type: 'affiliate',
-          clicks: 788,
-          conversions: 44,
-          estimatedContribution: 1630,
-        },
-      ],
+      productActivity,
       pendingActions: [
         { id: 'campaign-approvals', label: 'Campaign approvals', count: 2, path: '/admin/approvals' },
         { id: 'unread-messages', label: 'Unread contact messages', count: 3, path: '/admin/messages' },
@@ -219,5 +200,29 @@ async function loadBlogPosts(): Promise<BlogPost[]> {
   } catch (error) {
     console.warn('Using dashboard content fallback because blog posts could not be loaded.', error)
     return []
+  }
+}
+
+async function loadProductActivity(): Promise<AdminDashboardProductActivity[]> {
+  try {
+    const response = await adminProductsAPI.getProducts()
+    return response.products
+      .sort((first, second) => second.estimatedContribution - first.estimatedContribution)
+      .slice(0, 3)
+      .map(mapProductActivity)
+  } catch (error) {
+    console.warn('Using empty dashboard product activity because products could not be loaded.', error)
+    return []
+  }
+}
+
+function mapProductActivity(product: AdminProduct): AdminDashboardProductActivity {
+  return {
+    id: product.id,
+    name: product.name,
+    type: product.type,
+    clicks: product.clickCount,
+    conversions: product.conversionCount,
+    estimatedContribution: product.estimatedContribution,
   }
 }

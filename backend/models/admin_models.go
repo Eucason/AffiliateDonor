@@ -308,3 +308,81 @@ type AdminMediaSummary struct {
 	MissingAltCount int `json:"missingAltCount"`
 	StorageBytes    int `json:"storageBytes"`
 }
+
+// AdminProductVariant captures merch option inventory.
+type AdminProductVariant struct {
+	ID                string  `json:"id"`
+	Name              string  `json:"name"`
+	SKU               string  `json:"sku"`
+	InventoryQuantity int     `json:"inventoryQuantity"`
+	Price             float64 `json:"price,omitempty"`
+}
+
+// AdminProductConversion captures product tracking windows for reports.
+type AdminProductConversion struct {
+	ID                    string    `json:"id"`
+	ProductID             string    `json:"productId"`
+	Source                string    `json:"source"`
+	Label                 string    `json:"label"`
+	Clicks                int       `json:"clicks"`
+	Conversions           int       `json:"conversions"`
+	EstimatedContribution float64   `json:"estimatedContribution"`
+	OccurredAt            time.Time `json:"occurredAt"`
+}
+
+// AdminProduct is the admin-facing affiliate or merchandise product model.
+type AdminProduct struct {
+	ID                    string                   `json:"id"`
+	Type                  string                   `json:"type"`
+	Name                  string                   `json:"name"`
+	Slug                  string                   `json:"slug"`
+	Brand                 string                   `json:"brand"`
+	SKU                   string                   `json:"sku,omitempty"`
+	Price                 float64                  `json:"price"`
+	Currency              string                   `json:"currency"`
+	ImageURL              string                   `json:"imageUrl"`
+	GalleryImages         []string                 `json:"galleryImages"`
+	CategoryID            string                   `json:"categoryId"`
+	CategoryName          string                   `json:"categoryName"`
+	AffiliateURL          string                   `json:"affiliateUrl,omitempty"`
+	LinkedCauseID         string                   `json:"linkedCauseId"`
+	LinkedCauseName       string                   `json:"linkedCauseName"`
+	AllocationPercent     float64                  `json:"allocationPercent"`
+	Description           string                   `json:"description"`
+	Status                string                   `json:"status"`
+	Featured              bool                     `json:"featured"`
+	ClickCount            int                      `json:"clickCount"`
+	ConversionCount       int                      `json:"conversionCount"`
+	EstimatedContribution float64                  `json:"estimatedContribution"`
+	InventoryQuantity     *int                     `json:"inventoryQuantity,omitempty"`
+	LowStockThreshold     *int                     `json:"lowStockThreshold,omitempty"`
+	Variants              []AdminProductVariant    `json:"variants"`
+	Conversions           []AdminProductConversion `json:"conversions"`
+	CreatedAt             time.Time                `json:"createdAt"`
+	UpdatedAt             time.Time                `json:"updatedAt"`
+}
+
+// AdminProductCategory organizes affiliate and merch products.
+type AdminProductCategory struct {
+	ID           string    `json:"id"`
+	Name         string    `json:"name"`
+	Slug         string    `json:"slug"`
+	Type         string    `json:"type"`
+	Description  string    `json:"description"`
+	ProductCount int       `json:"productCount"`
+	Status       string    `json:"status"`
+	UpdatedAt    time.Time `json:"updatedAt"`
+}
+
+// AdminProductSummary provides product commerce rollups.
+type AdminProductSummary struct {
+	TotalCount            int     `json:"totalCount"`
+	PublishedCount        int     `json:"publishedCount"`
+	DraftCount            int     `json:"draftCount"`
+	ArchivedCount         int     `json:"archivedCount"`
+	FeaturedCount         int     `json:"featuredCount"`
+	LowStockCount         int     `json:"lowStockCount"`
+	ClickCount            int     `json:"clickCount"`
+	ConversionCount       int     `json:"conversionCount"`
+	EstimatedContribution float64 `json:"estimatedContribution"`
+}
