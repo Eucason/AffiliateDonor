@@ -51,5 +51,14 @@ func SetupAdminRoutes(rg *gin.RouterGroup) {
 			content.PUT("/:id", adminhandlers.UpdateAdminContentBlock)
 			content.PATCH("/:id/status", adminhandlers.UpdateAdminContentStatus)
 		}
+
+		media := admin.Group("/media")
+		{
+			media.GET("", adminhandlers.GetAdminMediaAssets)
+			media.GET("/:id", adminhandlers.GetAdminMediaAsset)
+			media.POST("", adminhandlers.CreateAdminMediaAsset)
+			media.PUT("/:id", adminhandlers.UpdateAdminMediaAsset)
+			media.DELETE("/:id", adminhandlers.DeleteAdminMediaAsset)
+		}
 	}
 }

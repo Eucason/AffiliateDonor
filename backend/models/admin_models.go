@@ -266,3 +266,45 @@ type AdminContentSummary struct {
 	ArchivedCount     int `json:"archivedCount"`
 	MissingMediaCount int `json:"missingMediaCount"`
 }
+
+// AdminMediaUsage records where a media asset is used in admin-managed content.
+type AdminMediaUsage struct {
+	ID         string `json:"id"`
+	Area       string `json:"area"`
+	EntityType string `json:"entityType"`
+	EntityID   string `json:"entityId"`
+	Label      string `json:"label"`
+	Path       string `json:"path"`
+}
+
+// AdminMediaAsset is a reusable image or document in the admin media library.
+type AdminMediaAsset struct {
+	ID           string            `json:"id"`
+	Title        string            `json:"title"`
+	FileName     string            `json:"fileName"`
+	URL          string            `json:"url"`
+	ThumbnailURL string            `json:"thumbnailUrl,omitempty"`
+	MimeType     string            `json:"mimeType"`
+	Type         string            `json:"type"`
+	SizeBytes    int               `json:"sizeBytes"`
+	Width        int               `json:"width,omitempty"`
+	Height       int               `json:"height,omitempty"`
+	AltText      string            `json:"altText"`
+	Caption      string            `json:"caption"`
+	Tags         []string          `json:"tags"`
+	UploadedBy   string            `json:"uploadedBy"`
+	UploadedAt   time.Time         `json:"uploadedAt"`
+	UpdatedAt    time.Time         `json:"updatedAt"`
+	Usage        []AdminMediaUsage `json:"usage"`
+	Status       string            `json:"status"`
+}
+
+// AdminMediaSummary provides media library rollups.
+type AdminMediaSummary struct {
+	TotalCount      int `json:"totalCount"`
+	ImageCount      int `json:"imageCount"`
+	UsedCount       int `json:"usedCount"`
+	UnusedCount     int `json:"unusedCount"`
+	MissingAltCount int `json:"missingAltCount"`
+	StorageBytes    int `json:"storageBytes"`
+}
