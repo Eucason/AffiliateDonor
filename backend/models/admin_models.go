@@ -97,3 +97,76 @@ type AdminCauseSummary struct {
 	TotalRaised   float64 `json:"totalRaised"`
 	TotalGoal     float64 `json:"totalGoal"`
 }
+
+// AdminUserDonation is a donor-facing contribution record for user profiles.
+type AdminUserDonation struct {
+	ID            string    `json:"id"`
+	CampaignID    string    `json:"campaignId"`
+	CampaignName  string    `json:"campaignName"`
+	Amount        float64   `json:"amount"`
+	Currency      string    `json:"currency"`
+	Method        string    `json:"method"`
+	Status        string    `json:"status"`
+	TransactionID string    `json:"transactionId"`
+	CreatedAt     time.Time `json:"createdAt"`
+}
+
+// AdminUserActivity is a compact donor/admin profile activity event.
+type AdminUserActivity struct {
+	ID          string    `json:"id"`
+	Type        string    `json:"type"`
+	Label       string    `json:"label"`
+	Description string    `json:"description"`
+	CreatedAt   time.Time `json:"createdAt"`
+	SourcePath  string    `json:"sourcePath,omitempty"`
+}
+
+// AdminUserNote is an internal admin note attached to a user profile.
+type AdminUserNote struct {
+	ID        string    `json:"id"`
+	Author    string    `json:"author"`
+	Body      string    `json:"body"`
+	CreatedAt time.Time `json:"createdAt"`
+}
+
+// AdminUserProductActivity captures affiliate or merchandise engagement.
+type AdminUserProductActivity struct {
+	ID        string    `json:"id"`
+	Label     string    `json:"label"`
+	Type      string    `json:"type"`
+	Value     float64   `json:"value"`
+	CreatedAt time.Time `json:"createdAt"`
+}
+
+// AdminUser is the admin-facing user and donor management model.
+type AdminUser struct {
+	ID                string                     `json:"id"`
+	Name              string                     `json:"name"`
+	Email             string                     `json:"email"`
+	AvatarURL         string                     `json:"avatarUrl,omitempty"`
+	Phone             string                     `json:"phone,omitempty"`
+	Location          string                     `json:"location,omitempty"`
+	Role              string                     `json:"role"`
+	Status            string                     `json:"status"`
+	JoinedAt          time.Time                  `json:"joinedAt"`
+	LastActiveAt      time.Time                  `json:"lastActiveAt"`
+	TotalDonations    float64                    `json:"totalDonations"`
+	TotalPurchases    int                        `json:"totalPurchases"`
+	CausesSupported   int                        `json:"causesSupported"`
+	ImpactScore       int                        `json:"impactScore"`
+	SupportedCauses   []string                   `json:"supportedCauses"`
+	ContactMessageIDs []string                   `json:"contactMessageIds"`
+	DonationHistory   []AdminUserDonation        `json:"donationHistory"`
+	ProductActivity   []AdminUserProductActivity `json:"productActivity"`
+	Activity          []AdminUserActivity        `json:"activity"`
+	Notes             []AdminUserNote            `json:"notes"`
+}
+
+// AdminUserSummary provides list page rollups.
+type AdminUserSummary struct {
+	TotalUsers     int     `json:"totalUsers"`
+	DonorCount     int     `json:"donorCount"`
+	AdminCount     int     `json:"adminCount"`
+	InactiveCount  int     `json:"inactiveCount"`
+	TotalDonations float64 `json:"totalDonations"`
+}

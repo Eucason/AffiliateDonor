@@ -26,5 +26,13 @@ func SetupAdminRoutes(rg *gin.RouterGroup) {
 			causes.PUT("/:id", adminhandlers.UpdateAdminCause)
 			causes.PATCH("/:id/status", adminhandlers.UpdateAdminCauseStatus)
 		}
+
+		users := admin.Group("/users")
+		{
+			users.GET("", adminhandlers.GetAdminUsers)
+			users.GET("/:id", adminhandlers.GetAdminUser)
+			users.PATCH("/:id/role", adminhandlers.UpdateAdminUserRole)
+			users.POST("/:id/notes", adminhandlers.AddAdminUserNote)
+		}
 	}
 }
