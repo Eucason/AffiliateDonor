@@ -43,5 +43,13 @@ func SetupAdminRoutes(rg *gin.RouterGroup) {
 			messages.PATCH("/:id/assignment", adminhandlers.AssignAdminMessage)
 			messages.POST("/:id/notes", adminhandlers.AddAdminMessageNote)
 		}
+
+		content := admin.Group("/content")
+		{
+			content.GET("", adminhandlers.GetAdminContentBlocks)
+			content.GET("/:id", adminhandlers.GetAdminContentBlock)
+			content.PUT("/:id", adminhandlers.UpdateAdminContentBlock)
+			content.PATCH("/:id/status", adminhandlers.UpdateAdminContentStatus)
+		}
 	}
 }

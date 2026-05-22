@@ -18,7 +18,14 @@ import AdminDonationsPage from './pages/Admin/AdminDonationsPage'
 import AdminBlogsPage from './pages/Admin/AdminBlogsPage'
 import AdminBlogCreatePage from './pages/Admin/AdminBlogCreatePage'
 import AdminBlogEditPage from './pages/Admin/AdminBlogEditPage'
+import AdminAboutContentPage from './pages/Admin/AdminAboutContentPage'
+import AdminBannersPage from './pages/Admin/AdminBannersPage'
+import AdminContentPage from './pages/Admin/AdminContentPage'
+import AdminFooterContentPage from './pages/Admin/AdminFooterContentPage'
+import AdminHomepageContentPage from './pages/Admin/AdminHomepageContentPage'
+import AdminImpactStoriesPage from './pages/Admin/AdminImpactStoriesPage'
 import AdminSearchPage from './pages/Admin/AdminSearchPage'
+import AdminTestimonialsPage from './pages/Admin/AdminTestimonialsPage'
 import AdminMessageDetailsPage from './pages/Admin/AdminMessageDetailsPage'
 import AdminMessagesPage from './pages/Admin/AdminMessagesPage'
 import AdminUserDetailsPage from './pages/Admin/AdminUserDetailsPage'
@@ -88,13 +95,13 @@ function App() {
                   <Route path="/admin/blogs" element={<AdminBlogsPage />} />
                   <Route path="/admin/blogs/new" element={<AdminBlogCreatePage />} />
                   <Route path="/admin/blogs/edit/:id" element={<AdminBlogEditPage />} />
-                  <Route path="/admin/content" element={adminPlaceholder('/admin/content')} />
-                  <Route path="/admin/content/homepage" element={adminPlaceholder('/admin/content/homepage')} />
-                  <Route path="/admin/content/banners" element={adminPlaceholder('/admin/content/banners')} />
-                  <Route path="/admin/content/impact-stories" element={adminPlaceholder('/admin/content/impact-stories')} />
-                  <Route path="/admin/content/testimonials" element={adminPlaceholder('/admin/content/testimonials')} />
-                  <Route path="/admin/content/about" element={adminPlaceholder('/admin/content/about')} />
-                  <Route path="/admin/content/footer" element={adminPlaceholder('/admin/content/footer')} />
+                  <Route path="/admin/content" element={<AdminContentPage />} />
+                  <Route path="/admin/content/homepage" element={<AdminHomepageContentPage />} />
+                  <Route path="/admin/content/banners" element={<AdminBannersPage />} />
+                  <Route path="/admin/content/impact-stories" element={<AdminImpactStoriesPage />} />
+                  <Route path="/admin/content/testimonials" element={<AdminTestimonialsPage />} />
+                  <Route path="/admin/content/about" element={<AdminAboutContentPage />} />
+                  <Route path="/admin/content/footer" element={<AdminFooterContentPage />} />
                   <Route path="/admin/media" element={adminPlaceholder('/admin/media')} />
                   <Route path="/admin/users" element={<AdminUsersPage />} />
                   <Route path="/admin/users/:id" element={<AdminUserDetailsPage />} />
