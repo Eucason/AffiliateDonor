@@ -224,3 +224,45 @@ type AdminMessageSummary struct {
 	ResolvedCount int `json:"resolvedCount"`
 	TotalCount    int `json:"totalCount"`
 }
+
+// AdminContentMetadata stores flexible per-block CMS settings.
+type AdminContentMetadata map[string]interface{}
+
+// AdminContentBlock is a structured public website content block.
+type AdminContentBlock struct {
+	ID                string               `json:"id"`
+	Area              string               `json:"area"`
+	Type              string               `json:"type"`
+	Title             string               `json:"title"`
+	Slug              string               `json:"slug"`
+	Status            string               `json:"status"`
+	Summary           string               `json:"summary"`
+	Body              string               `json:"body"`
+	MediaURL          string               `json:"mediaUrl,omitempty"`
+	CTALabel          string               `json:"ctaLabel,omitempty"`
+	CTATarget         string               `json:"ctaTarget,omitempty"`
+	LinkLabel         string               `json:"linkLabel,omitempty"`
+	LinkTarget        string               `json:"linkTarget,omitempty"`
+	LinkedEntityID    string               `json:"linkedEntityId,omitempty"`
+	LinkedEntityLabel string               `json:"linkedEntityLabel,omitempty"`
+	Metadata          AdminContentMetadata `json:"metadata"`
+	SortOrder         int                  `json:"sortOrder"`
+	StartAt           *time.Time           `json:"startAt,omitempty"`
+	EndAt             *time.Time           `json:"endAt,omitempty"`
+	ScheduledAt       *time.Time           `json:"scheduledAt,omitempty"`
+	PublishedAt       *time.Time           `json:"publishedAt,omitempty"`
+	ArchivedAt        *time.Time           `json:"archivedAt,omitempty"`
+	UpdatedBy         string               `json:"updatedBy"`
+	CreatedAt         time.Time            `json:"createdAt"`
+	UpdatedAt         time.Time            `json:"updatedAt"`
+}
+
+// AdminContentSummary provides status rollups for CMS pages.
+type AdminContentSummary struct {
+	TotalCount        int `json:"totalCount"`
+	PublishedCount    int `json:"publishedCount"`
+	DraftCount        int `json:"draftCount"`
+	ScheduledCount    int `json:"scheduledCount"`
+	ArchivedCount     int `json:"archivedCount"`
+	MissingMediaCount int `json:"missingMediaCount"`
+}
