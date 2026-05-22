@@ -133,6 +133,44 @@ export const adminNavigationGroups: AdminNavigationGroup[] = [
         icon: 'BarChart3',
         description: 'Donation, campaign, donor, content, and product analytics',
         permission: 'reports:read',
+        children: [
+          {
+            label: 'Overview',
+            path: '/admin/reports',
+            icon: 'BarChart3',
+            permission: 'reports:read',
+          },
+          {
+            label: 'Donations',
+            path: '/admin/reports/donations',
+            icon: 'HeartHandshake',
+            permission: 'reports:read',
+          },
+          {
+            label: 'Campaigns',
+            path: '/admin/reports/campaigns',
+            icon: 'Target',
+            permission: 'reports:read',
+          },
+          {
+            label: 'Donors',
+            path: '/admin/reports/donors',
+            icon: 'Users',
+            permission: 'reports:read',
+          },
+          {
+            label: 'Content',
+            path: '/admin/reports/content',
+            icon: 'FileText',
+            permission: 'reports:read',
+          },
+          {
+            label: 'Products',
+            path: '/admin/reports/products',
+            icon: 'ShoppingBag',
+            permission: 'reports:read',
+          },
+        ],
       },
       {
         label: 'Exports',

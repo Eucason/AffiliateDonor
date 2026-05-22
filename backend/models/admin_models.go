@@ -386,3 +386,134 @@ type AdminProductSummary struct {
 	ConversionCount       int     `json:"conversionCount"`
 	EstimatedContribution float64 `json:"estimatedContribution"`
 }
+
+// AdminReportSummary provides cross-domain analytics rollups.
+type AdminReportSummary struct {
+	DonationTotal           float64 `json:"donationTotal"`
+	DonationCount           int     `json:"donationCount"`
+	SuccessfulDonationCount int     `json:"successfulDonationCount"`
+	AverageDonation         float64 `json:"averageDonation"`
+	ActiveCampaignCount     int     `json:"activeCampaignCount"`
+	CampaignProgressPercent int     `json:"campaignProgressPercent"`
+	DonorCount              int     `json:"donorCount"`
+	NewDonorCount           int     `json:"newDonorCount"`
+	ReturningDonorCount     int     `json:"returningDonorCount"`
+	ContentUpdateCount      int     `json:"contentUpdateCount"`
+	PublishedContentCount   int     `json:"publishedContentCount"`
+	ProductClicks           int     `json:"productClicks"`
+	ProductConversions      int     `json:"productConversions"`
+	ProductContribution     float64 `json:"productContribution"`
+}
+
+// AdminDonationReportRecord is a compact row used to rebuild donation trends.
+type AdminDonationReportRecord struct {
+	ID           string    `json:"id"`
+	CampaignName string    `json:"campaignName"`
+	Status       string    `json:"status"`
+	Method       string    `json:"method"`
+	Amount       float64   `json:"amount"`
+	Currency     string    `json:"currency"`
+	CreatedAt    time.Time `json:"createdAt"`
+}
+
+// AdminDonationTrendPoint is an aggregated donation chart row.
+type AdminDonationTrendPoint struct {
+	ID                    string  `json:"id"`
+	Label                 string  `json:"label"`
+	Date                  string  `json:"date"`
+	DonationCount         int     `json:"donationCount"`
+	SuccessfulCount       int     `json:"successfulCount"`
+	PendingCount          int     `json:"pendingCount"`
+	FailedOrRefundedCount int     `json:"failedOrRefundedCount"`
+	Amount                float64 `json:"amount"`
+}
+
+// AdminCampaignPerformanceReport captures campaign analytics rows.
+type AdminCampaignPerformanceReport struct {
+	ID              string    `json:"id"`
+	Name            string    `json:"name"`
+	Category        string    `json:"category"`
+	Status          string    `json:"status"`
+	Raised          float64   `json:"raised"`
+	Goal            float64   `json:"goal"`
+	Currency        string    `json:"currency"`
+	DonorCount      int       `json:"donorCount"`
+	AverageDonation float64   `json:"averageDonation"`
+	ProgressPercent int       `json:"progressPercent"`
+	ConversionRate  int       `json:"conversionRate"`
+	UpdatedAt       time.Time `json:"updatedAt"`
+	Path            string    `json:"path"`
+}
+
+// AdminDonorGrowthPoint captures donor acquisition and retention rollups.
+type AdminDonorGrowthPoint struct {
+	ID              string  `json:"id"`
+	Label           string  `json:"label"`
+	Date            string  `json:"date"`
+	NewDonors       int     `json:"newDonors"`
+	ReturningDonors int     `json:"returningDonors"`
+	TotalDonors     int     `json:"totalDonors"`
+	AverageDonation float64 `json:"averageDonation"`
+}
+
+// AdminContentPerformanceReport captures blog and CMS performance rows.
+type AdminContentPerformanceReport struct {
+	ID                string    `json:"id"`
+	Title             string    `json:"title"`
+	Type              string    `json:"type"`
+	Status            string    `json:"status"`
+	Views             int       `json:"views"`
+	UniqueVisitors    int       `json:"uniqueVisitors"`
+	ConversionAssists int       `json:"conversionAssists"`
+	UpdatedAt         time.Time `json:"updatedAt"`
+	Path              string    `json:"path"`
+}
+
+// AdminProductPerformanceReport captures affiliate and merch reporting rows.
+type AdminProductPerformanceReport struct {
+	ID                    string    `json:"id"`
+	Name                  string    `json:"name"`
+	Type                  string    `json:"type"`
+	Status                string    `json:"status"`
+	LinkedCauseName       string    `json:"linkedCauseName"`
+	Clicks                int       `json:"clicks"`
+	Conversions           int       `json:"conversions"`
+	ConversionRate        float64   `json:"conversionRate"`
+	EstimatedContribution float64   `json:"estimatedContribution"`
+	UpdatedAt             time.Time `json:"updatedAt"`
+	Path                  string    `json:"path"`
+}
+
+// AdminReportExportItem describes an available report export.
+type AdminReportExportItem struct {
+	ID          string    `json:"id"`
+	Label       string    `json:"label"`
+	Section     string    `json:"section"`
+	Description string    `json:"description"`
+	RowCount    int       `json:"rowCount"`
+	Format      string    `json:"format"`
+	UpdatedAt   time.Time `json:"updatedAt"`
+}
+
+// AdminReportFilterOptions lists values available in report filters.
+type AdminReportFilterOptions struct {
+	Campaigns        []string `json:"campaigns"`
+	DonationStatuses []string `json:"donationStatuses"`
+	PaymentMethods   []string `json:"paymentMethods"`
+	ProductTypes     []string `json:"productTypes"`
+	ContentTypes     []string `json:"contentTypes"`
+}
+
+// AdminReportsResponse is the admin reporting dashboard payload.
+type AdminReportsResponse struct {
+	GeneratedAt         time.Time                            `json:"generatedAt"`
+	Summary             AdminReportSummary                   `json:"summary"`
+	DonationRecords     []AdminDonationReportRecord          `json:"donationRecords"`
+	DonationTrends      map[string][]AdminDonationTrendPoint `json:"donationTrends"`
+	CampaignPerformance []AdminCampaignPerformanceReport     `json:"campaignPerformance"`
+	DonorGrowth         []AdminDonorGrowthPoint              `json:"donorGrowth"`
+	ContentPerformance  []AdminContentPerformanceReport      `json:"contentPerformance"`
+	ProductPerformance  []AdminProductPerformanceReport      `json:"productPerformance"`
+	Exports             []AdminReportExportItem              `json:"exports"`
+	FilterOptions       AdminReportFilterOptions             `json:"filterOptions"`
+}

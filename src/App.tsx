@@ -34,6 +34,13 @@ import AdminMessagesPage from './pages/Admin/AdminMessagesPage'
 import AdminProductCategoriesPage from './pages/Admin/AdminProductCategoriesPage'
 import AdminProductCreatePage from './pages/Admin/AdminProductCreatePage'
 import AdminProductEditPage from './pages/Admin/AdminProductEditPage'
+import AdminReportsPage from './pages/Admin/AdminReportsPage'
+import AdminDonationReportsPage from './pages/Admin/AdminDonationReportsPage'
+import AdminCampaignReportsPage from './pages/Admin/AdminCampaignReportsPage'
+import AdminDonorReportsPage from './pages/Admin/AdminDonorReportsPage'
+import AdminContentReportsPage from './pages/Admin/AdminContentReportsPage'
+import AdminProductReportsPage from './pages/Admin/AdminProductReportsPage'
+import AdminExportsPage from './pages/Admin/AdminExportsPage'
 import AdminUserDetailsPage from './pages/Admin/AdminUserDetailsPage'
 import AdminUsersPage from './pages/Admin/AdminUsersPage'
 import AboutPage from './pages/About/AboutPage'
@@ -118,13 +125,13 @@ function App() {
                   <Route path="/admin/products/categories" element={<AdminProductCategoriesPage />} />
                   <Route path="/admin/products/new" element={<AdminProductCreatePage />} />
                   <Route path="/admin/products/:id/edit" element={<AdminProductEditPage />} />
-                  <Route path="/admin/reports" element={adminPlaceholder('/admin/reports')} />
-                  <Route path="/admin/reports/donations" element={adminPlaceholder('/admin/reports/donations')} />
-                  <Route path="/admin/reports/campaigns" element={adminPlaceholder('/admin/reports/campaigns')} />
-                  <Route path="/admin/reports/donors" element={adminPlaceholder('/admin/reports/donors')} />
-                  <Route path="/admin/reports/content" element={adminPlaceholder('/admin/reports/content')} />
-                  <Route path="/admin/reports/products" element={adminPlaceholder('/admin/reports/products')} />
-                  <Route path="/admin/exports" element={adminPlaceholder('/admin/exports')} />
+                  <Route path="/admin/reports" element={<AdminReportsPage />} />
+                  <Route path="/admin/reports/donations" element={<AdminDonationReportsPage />} />
+                  <Route path="/admin/reports/campaigns" element={<AdminCampaignReportsPage />} />
+                  <Route path="/admin/reports/donors" element={<AdminDonorReportsPage />} />
+                  <Route path="/admin/reports/content" element={<AdminContentReportsPage />} />
+                  <Route path="/admin/reports/products" element={<AdminProductReportsPage />} />
+                  <Route path="/admin/exports" element={<AdminExportsPage />} />
                   <Route path="/admin/notifications" element={adminPlaceholder('/admin/notifications')} />
                   <Route path="/admin/settings" element={adminPlaceholder('/admin/settings')} />
                   <Route path="/admin/audit-logs" element={adminPlaceholder('/admin/audit-logs')} />
