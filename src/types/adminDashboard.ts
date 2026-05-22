@@ -1,4 +1,11 @@
-export type AdminDashboardStatus = 'successful' | 'pending' | 'failed' | 'published' | 'draft'
+export type AdminDashboardStatus =
+  | 'successful'
+  | 'pending'
+  | 'failed'
+  | 'published'
+  | 'draft'
+  | 'archived'
+  | 'scheduled'
 
 export interface AdminDashboardMetric {
   id: string
@@ -46,7 +53,7 @@ export interface AdminDashboardContentItem {
   id: string
   title: string
   type: 'blog' | 'homepage' | 'announcement'
-  status: 'published' | 'draft'
+  status: 'published' | 'draft' | 'archived' | 'scheduled'
   updatedAt: string
 }
 

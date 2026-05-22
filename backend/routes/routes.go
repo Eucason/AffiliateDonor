@@ -105,6 +105,7 @@ func SetupBlogRoutes(rg *gin.RouterGroup) {
 		adminBlogs.GET("/:id", handlers.GetAdminBlogByID)
 		adminBlogs.POST("", handlers.CreateBlog)
 		adminBlogs.PUT("/:id", handlers.UpdateBlog)
+		adminBlogs.PATCH("/:id/status", handlers.UpdateBlogStatus)
 		adminBlogs.DELETE("/:id", handlers.DeleteBlog)
 	}
 }

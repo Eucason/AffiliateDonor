@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import AdminPageHeader from '@/components/admin/shared/AdminPageHeader'
 import AdminLayout from '@/components/organisms/AdminLayout'
 import BlogForm from '@/components/organisms/BlogForm'
 import { blogAPI } from '@/services/blogAPI'
@@ -13,7 +14,6 @@ export default function AdminBlogCreatePage() {
     try {
       setIsLoading(true)
       const createdPost = await blogAPI.createPost(data as BlogPostCreateData)
-      alert('Blog post created successfully!')
       navigate(`/admin/blogs/edit/${createdPost.id}`)
       return createdPost
     } catch (error) {
@@ -27,17 +27,13 @@ export default function AdminBlogCreatePage() {
   return (
     <AdminLayout>
       <div className="space-y-6">
-        {/* Header */}
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Create New Blog Post</h1>
-          <p className="text-gray-600">Write and publish a new blog post</p>
-        </div>
-
-        {/* Blog Form */}
-        <BlogForm
-          onSubmit={handleSubmit}
-          isLoading={isLoading}
+        <AdminPageHeader
+          eyebrow="Content"
+          title="Create Blog Post"
+          description="Draft, schedule, preview, and optimize a new public blog post."
         />
+
+        <BlogForm onSubmit={handleSubmit} isLoading={isLoading} />
       </div>
     </AdminLayout>
   )

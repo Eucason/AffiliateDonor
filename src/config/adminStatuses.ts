@@ -15,6 +15,7 @@ export const adminStatusDefinitions: Record<string, AdminStatusDefinition> = {
   published: { label: 'Published', tone: 'green' },
   refunded: { label: 'Refunded', tone: 'blue' },
   resolved: { label: 'Resolved', tone: 'green' },
+  scheduled: { label: 'Scheduled', tone: 'blue' },
   succeeded: { label: 'Succeeded', tone: 'green' },
   successful: { label: 'Successful', tone: 'green' },
   unread: { label: 'Unread', tone: 'primary' },

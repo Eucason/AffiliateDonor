@@ -1,66 +1,57 @@
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Calendar, User, ArrowRight } from 'lucide-react'
+import { Calendar, User, ArrowRight, Loader2 } from 'lucide-react'
 import Card from '@/components/molecules/Card'
+import { blogAPI } from '@/services/blogAPI'
+import type { BlogPost } from '@/types/blog'
 import { pageTransition, slideUp, staggerContainer, staggerItem } from '@/utils/motionVariants'
 
-const blogPosts = [
-  {
-    id: 1,
-    title: '10 Ways to Make Your Shopping More Impactful',
-    excerpt: 'Discover simple strategies to maximize the positive impact of your everyday purchases...',
-    image: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800',
-    author: 'Sarah Johnson',
-    date: '2024-02-15',
-    category: 'Tips & Guides',
-  },
-  {
-    id: 2,
-    title: 'How We Verify Our Charitable Partners',
-    excerpt: 'Transparency is key. Learn about our rigorous vetting process for cause partners...',
-    image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800',
-    author: 'David Park',
-    date: '2024-02-10',
-    category: 'Impact',
-  },
-  {
-    id: 3,
-    title: 'The Rise of Conscious Consumerism',
-    excerpt: 'Exploring the growing movement of shoppers who vote with their wallets...',
-    image: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800',
-    author: 'Emma Rodriguez',
-    date: '2024-02-05',
-    category: 'Trends',
-  },
-  {
-    id: 4,
-    title: 'Success Story: Clean Water Initiative',
-    excerpt: 'See how your donations helped bring clean water to 5,000 families in Kenya...',
-    image: 'https://images.unsplash.com/photo-1509099863731-ef4bff19e808?w=800',
-    author: 'Michael Chen',
-    date: '2024-01-28',
-    category: 'Success Stories',
-  },
-  {
-    id: 5,
-    title: 'Understanding Affiliate Marketing for Good',
-    excerpt: 'Breaking down how we turn commissions into charitable donations...',
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
-    author: 'Sarah Johnson',
-    date: '2024-01-20',
-    category: 'Education',
-  },
-  {
-    id: 6,
-    title: 'Partner Spotlight: Education for All',
-    excerpt: 'Meet one of our amazing cause partners making education accessible worldwide...',
-    image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800',
-    author: 'Emma Rodriguez',
-    date: '2024-01-15',
-    category: 'Partners',
-  },
-]
+function formatPostDate(post: BlogPost) {
+  const date = post.publishedAt ?? post.updatedAt
+  return new Date(date).toLocaleDateString()
+}
 
 export default function BlogPage() {
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let isMounted = true
+
+    const fetchPosts = async () => {
+      try {
+        setLoading(true)
+        const posts = await blogAPI.getPublishedPosts()
+
+        if (isMounted) {
+          setBlogPosts(posts)
+          setError(null)
+        }
+      } catch (err) {
+        console.error('Failed to fetch blog posts:', err)
+
+        if (isMounted) {
+          setError('Failed to load blog posts.')
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false)
+        }
+      }
+    }
+
+    fetchPosts()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  const featuredPost = blogPosts.find((post) => post.isFeatured) ?? blogPosts[0]
+  const gridPosts = featuredPost ? blogPosts.filter((post) => post.id !== featuredPost.id) : []
+
   return (
     <motion.div {...pageTransition} variants={slideUp} className="min-h-screen bg-gray-50">
       {/* Hero */}
@@ -75,45 +66,63 @@ export default function BlogPage() {
 
       {/* Featured Post */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <Card className="overflow-hidden md:flex">
-            <div className="md:w-1/2 h-96 md:h-auto">
-              <img
-                src={blogPosts[0].image}
-                alt={blogPosts[0].title}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="md:w-1/2 p-8 flex flex-col justify-center">
-              <span className="inline-block px-3 py-1 bg-primary-100 text-primary-600 rounded-full text-sm font-semibold mb-4 w-fit">
-                Featured
-              </span>
-              <h2 className="text-3xl font-bold mb-4">{blogPosts[0].title}</h2>
-              <p className="text-gray-600 mb-6">{blogPosts[0].excerpt}</p>
-              <div className="flex items-center gap-4 text-sm text-gray-500 mb-6">
-                <div className="flex items-center gap-2">
-                  <User className="w-4 h-4" />
-                  {blogPosts[0].author}
-                </div>
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
-                  {new Date(blogPosts[0].date).toLocaleDateString()}
-                </div>
-              </div>
-              <button className="flex items-center gap-2 text-primary-600 font-semibold hover:gap-3 transition-all">
-                Read More
-                <ArrowRight className="w-5 h-5" />
-              </button>
-            </div>
+        {loading ? (
+          <div className="py-20 text-center">
+            <Loader2 className="h-12 w-12 animate-spin mx-auto text-primary-600" />
+            <p className="mt-4 text-lg text-gray-600">Loading blog posts...</p>
+          </div>
+        ) : error ? (
+          <Card className="p-8 text-center">
+            <p className="text-red-600 font-semibold">{error}</p>
           </Card>
-        </motion.div>
+        ) : featuredPost ? (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <Card className="overflow-hidden md:flex">
+              {featuredPost.featuredImageUrl && (
+                <div className="md:w-1/2 h-96 md:h-auto">
+                  <img
+                    src={featuredPost.featuredImageUrl}
+                    alt={featuredPost.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              <div className="md:w-1/2 p-8 flex flex-col justify-center">
+                <span className="inline-block px-3 py-1 bg-primary-100 text-primary-600 rounded-full text-sm font-semibold mb-4 w-fit">
+                  Featured
+                </span>
+                <h2 className="text-3xl font-bold mb-4">{featuredPost.title}</h2>
+                <p className="text-gray-600 mb-6">{featuredPost.excerpt}</p>
+                <div className="flex items-center gap-4 text-sm text-gray-500 mb-6">
+                  <div className="flex items-center gap-2">
+                    <User className="w-4 h-4" />
+                    {featuredPost.authorName}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4" />
+                    {formatPostDate(featuredPost)}
+                  </div>
+                </div>
+                <Link
+                  to={`/blog/${featuredPost.slug}`}
+                  className="flex items-center gap-2 text-primary-600 font-semibold hover:gap-3 transition-all"
+                >
+                  Read More
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
+              </div>
+            </Card>
+          </motion.div>
+        ) : (
+          <Card className="p-8 text-center">
+            <p className="text-gray-600">No published blog posts are available yet.</p>
+          </Card>
+        )}
       </section>
 
       {/* Blog Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {!loading && !error && gridPosts.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <motion.div
           variants={staggerContainer}
           initial="initial"
@@ -121,42 +130,50 @@ export default function BlogPage() {
           viewport={{ once: true }}
           className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {blogPosts.slice(1).map((post) => (
+          {gridPosts.map((post) => (
             <motion.div key={post.id} variants={staggerItem}>
               <Card className="h-full flex flex-col overflow-hidden">
-                <div className="h-48 overflow-hidden">
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="w-full h-full object-cover transition-transform hover:scale-110 duration-300"
-                  />
-                </div>
+                {post.featuredImageUrl && (
+                  <div className="h-48 overflow-hidden">
+                    <img
+                      src={post.featuredImageUrl}
+                      alt={post.title}
+                      className="w-full h-full object-cover transition-transform hover:scale-110 duration-300"
+                    />
+                  </div>
+                )}
                 <div className="p-6 flex-1 flex flex-col">
-                  <span className="inline-block px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-semibold mb-3 w-fit">
-                    {post.category}
-                  </span>
+                  {post.category && (
+                    <span className="inline-block px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-semibold mb-3 w-fit">
+                      {post.category}
+                    </span>
+                  )}
                   <h3 className="text-xl font-bold mb-3 flex-1">{post.title}</h3>
                   <p className="text-gray-600 mb-4 text-sm">{post.excerpt}</p>
                   <div className="flex items-center gap-4 text-xs text-gray-500 mb-4 pt-4 border-t">
                     <div className="flex items-center gap-1">
                       <User className="w-3 h-3" />
-                      {post.author}
+                      {post.authorName}
                     </div>
                     <div className="flex items-center gap-1">
                       <Calendar className="w-3 h-3" />
-                      {new Date(post.date).toLocaleDateString()}
+                      {formatPostDate(post)}
                     </div>
                   </div>
-                  <button className="flex items-center gap-2 text-primary-600 font-semibold hover:gap-3 transition-all text-sm">
+                  <Link
+                    to={`/blog/${post.slug}`}
+                    className="flex items-center gap-2 text-primary-600 font-semibold hover:gap-3 transition-all text-sm"
+                  >
                     Read More
                     <ArrowRight className="w-4 h-4" />
-                  </button>
+                  </Link>
                 </div>
               </Card>
             </motion.div>
           ))}
         </motion.div>
-      </section>
+        </section>
+      )}
 
       {/* Newsletter */}
       <section className="bg-primary-600 text-white py-16">
