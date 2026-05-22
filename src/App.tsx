@@ -24,6 +24,7 @@ import AdminContentPage from './pages/Admin/AdminContentPage'
 import AdminFooterContentPage from './pages/Admin/AdminFooterContentPage'
 import AdminHomepageContentPage from './pages/Admin/AdminHomepageContentPage'
 import AdminImpactStoriesPage from './pages/Admin/AdminImpactStoriesPage'
+import AdminMediaLibraryPage from './pages/Admin/AdminMediaLibraryPage'
 import AdminSearchPage from './pages/Admin/AdminSearchPage'
 import AdminTestimonialsPage from './pages/Admin/AdminTestimonialsPage'
 import AdminMessageDetailsPage from './pages/Admin/AdminMessageDetailsPage'
@@ -102,7 +103,7 @@ function App() {
                   <Route path="/admin/content/testimonials" element={<AdminTestimonialsPage />} />
                   <Route path="/admin/content/about" element={<AdminAboutContentPage />} />
                   <Route path="/admin/content/footer" element={<AdminFooterContentPage />} />
-                  <Route path="/admin/media" element={adminPlaceholder('/admin/media')} />
+                  <Route path="/admin/media" element={<AdminMediaLibraryPage />} />
                   <Route path="/admin/users" element={<AdminUsersPage />} />
                   <Route path="/admin/users/:id" element={<AdminUserDetailsPage />} />
                   <Route path="/admin/messages" element={<AdminMessagesPage />} />
