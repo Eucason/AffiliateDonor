@@ -9,6 +9,10 @@ import ShopPage from './pages/Shop/ShopPage'
 import MerchPage from './pages/Merch/MerchPage'
 import DashboardPage from './pages/Dashboard/DashboardPage'
 import AdminDashboardPage from './pages/Admin/AdminDashboardPage'
+import AdminCauseCreatePage from './pages/Admin/AdminCauseCreatePage'
+import AdminCauseDetailsPage from './pages/Admin/AdminCauseDetailsPage'
+import AdminCauseEditPage from './pages/Admin/AdminCauseEditPage'
+import AdminCausesPage from './pages/Admin/AdminCausesPage'
 import AdminDonationDetailsPage from './pages/Admin/AdminDonationDetailsPage'
 import AdminDonationsPage from './pages/Admin/AdminDonationsPage'
 import AdminBlogsPage from './pages/Admin/AdminBlogsPage'
@@ -73,10 +77,10 @@ function App() {
                   <Route path="/admin" element={<AdminDashboardPage />} />
                   <Route path="/admin/donations" element={<AdminDonationsPage />} />
                   <Route path="/admin/donations/:id" element={<AdminDonationDetailsPage />} />
-                  <Route path="/admin/causes" element={adminPlaceholder('/admin/causes')} />
-                  <Route path="/admin/causes/new" element={adminPlaceholder('/admin/causes/new')} />
-                  <Route path="/admin/causes/:id" element={adminPlaceholder('/admin/causes/:id')} />
-                  <Route path="/admin/causes/:id/edit" element={adminPlaceholder('/admin/causes/:id/edit')} />
+                  <Route path="/admin/causes" element={<AdminCausesPage />} />
+                  <Route path="/admin/causes/new" element={<AdminCauseCreatePage />} />
+                  <Route path="/admin/causes/:id" element={<AdminCauseDetailsPage />} />
+                  <Route path="/admin/causes/:id/edit" element={<AdminCauseEditPage />} />
                   <Route path="/admin/blogs" element={<AdminBlogsPage />} />
                   <Route path="/admin/blogs/new" element={<AdminBlogCreatePage />} />
                   <Route path="/admin/blogs/edit/:id" element={<AdminBlogEditPage />} />
