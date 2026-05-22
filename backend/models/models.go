@@ -8,6 +8,8 @@ type BlogStatus string
 const (
 	BlogStatusDraft     BlogStatus = "draft"
 	BlogStatusPublished BlogStatus = "published"
+	BlogStatusArchived  BlogStatus = "archived"
+	BlogStatusScheduled BlogStatus = "scheduled"
 )
 
 // Cause represents a charitable organization
@@ -29,22 +31,36 @@ type Cause struct {
 
 // BlogPost represents a blog post
 type BlogPost struct {
-	ID               string     `json:"id"`
-	Title            string     `json:"title"`
-	Slug             string     `json:"slug"`
-	Excerpt          string     `json:"excerpt"`
-	Content          string     `json:"content"`
-	ContentFormat    string     `json:"contentFormat"`
-	FeaturedImageURL *string    `json:"featuredImageUrl,omitempty"`
-	Category         *string    `json:"category,omitempty"`
-	Tags             []string   `json:"tags"`
-	AuthorName       string     `json:"authorName"`
-	Status           BlogStatus `json:"status"`
-	SEOTitle         *string    `json:"seoTitle,omitempty"`
-	SEODescription   *string    `json:"seoDescription,omitempty"`
-	CreatedAt        time.Time  `json:"createdAt"`
-	UpdatedAt        time.Time  `json:"updatedAt"`
-	PublishedAt      *time.Time `json:"publishedAt,omitempty"`
+	ID               string               `json:"id"`
+	Title            string               `json:"title"`
+	Slug             string               `json:"slug"`
+	Excerpt          string               `json:"excerpt"`
+	Content          string               `json:"content"`
+	ContentFormat    string               `json:"contentFormat"`
+	FeaturedImageURL *string              `json:"featuredImageUrl,omitempty"`
+	Category         *string              `json:"category,omitempty"`
+	Tags             []string             `json:"tags"`
+	AuthorName       string               `json:"authorName"`
+	Status           BlogStatus           `json:"status"`
+	IsFeatured       bool                 `json:"isFeatured"`
+	SEOTitle         *string              `json:"seoTitle,omitempty"`
+	SEODescription   *string              `json:"seoDescription,omitempty"`
+	ReadTimeMinutes  int                  `json:"readTimeMinutes"`
+	Performance      *BlogPostPerformance `json:"performance,omitempty"`
+	CreatedAt        time.Time            `json:"createdAt"`
+	UpdatedAt        time.Time            `json:"updatedAt"`
+	PublishedAt      *time.Time           `json:"publishedAt,omitempty"`
+	ScheduledAt      *time.Time           `json:"scheduledAt,omitempty"`
+	ArchivedAt       *time.Time           `json:"archivedAt,omitempty"`
+}
+
+// BlogPostPerformance captures lightweight blog analytics for admin reporting.
+type BlogPostPerformance struct {
+	ViewCount             int        `json:"viewCount"`
+	UniqueVisitors        int        `json:"uniqueVisitors"`
+	AverageReadSeconds    int        `json:"averageReadSeconds"`
+	ConversionAssistCount int        `json:"conversionAssistCount"`
+	LastViewedAt          *time.Time `json:"lastViewedAt,omitempty"`
 }
 
 // Donation represents a donation transaction
@@ -55,7 +71,7 @@ type Donation struct {
 	Amount    float64   `json:"amount"`
 	Currency  string    `json:"currency"`
 	Method    string    `json:"method"`
-	Status    string    `json:"status"` // pending, completed, failed
+	Status    string    `json:"status"`            // pending, completed, failed
 	TxHash    string    `json:"tx_hash,omitempty"` // for crypto
 	CreatedAt time.Time `json:"created_at"`
 }
@@ -115,12 +131,12 @@ type Payment struct {
 
 // CryptoPayment represents a cryptocurrency payment
 type CryptoPayment struct {
-	ID        string    `json:"id"`
-	UserID    string    `json:"user_id"`
-	Amount    float64   `json:"amount"`
-	CryptoType string   `json:"crypto_type"` // btc, eth, ltc, usdc, usdt, bnb
-	Address   string    `json:"address"`
-	TxHash    string    `json:"tx_hash"`
-	Status    string    `json:"status"` // pending, confirmed, failed
-	CreatedAt time.Time `json:"created_at"`
+	ID         string    `json:"id"`
+	UserID     string    `json:"user_id"`
+	Amount     float64   `json:"amount"`
+	CryptoType string    `json:"crypto_type"` // btc, eth, ltc, usdc, usdt, bnb
+	Address    string    `json:"address"`
+	TxHash     string    `json:"tx_hash"`
+	Status     string    `json:"status"` // pending, confirmed, failed
+	CreatedAt  time.Time `json:"created_at"`
 }
