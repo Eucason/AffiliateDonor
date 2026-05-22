@@ -9,6 +9,8 @@ import ShopPage from './pages/Shop/ShopPage'
 import MerchPage from './pages/Merch/MerchPage'
 import DashboardPage from './pages/Dashboard/DashboardPage'
 import AdminDashboardPage from './pages/Admin/AdminDashboardPage'
+import AdminDonationDetailsPage from './pages/Admin/AdminDonationDetailsPage'
+import AdminDonationsPage from './pages/Admin/AdminDonationsPage'
 import AdminBlogsPage from './pages/Admin/AdminBlogsPage'
 import AdminBlogCreatePage from './pages/Admin/AdminBlogCreatePage'
 import AdminBlogEditPage from './pages/Admin/AdminBlogEditPage'
@@ -69,8 +71,8 @@ function App() {
                 {/* Admin Routes - Protected */}
                 <Route element={<ProtectedRoute />}>
                   <Route path="/admin" element={<AdminDashboardPage />} />
-                  <Route path="/admin/donations" element={adminPlaceholder('/admin/donations')} />
-                  <Route path="/admin/donations/:id" element={adminPlaceholder('/admin/donations/:id')} />
+                  <Route path="/admin/donations" element={<AdminDonationsPage />} />
+                  <Route path="/admin/donations/:id" element={<AdminDonationDetailsPage />} />
                   <Route path="/admin/causes" element={adminPlaceholder('/admin/causes')} />
                   <Route path="/admin/causes/new" element={adminPlaceholder('/admin/causes/new')} />
                   <Route path="/admin/causes/:id" element={adminPlaceholder('/admin/causes/:id')} />
