@@ -56,6 +56,9 @@ func main() {
 		// Donations
 		routes.SetupDonationRoutes(api)
 
+		// Contact
+		routes.SetupContactRoutes(api)
+
 		// Products/Shopping
 		routes.SetupProductRoutes(api)
 

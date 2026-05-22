@@ -170,3 +170,57 @@ type AdminUserSummary struct {
 	InactiveCount  int     `json:"inactiveCount"`
 	TotalDonations float64 `json:"totalDonations"`
 }
+
+// AdminMessageNote is an internal note attached to a contact message.
+type AdminMessageNote struct {
+	ID        string    `json:"id"`
+	Author    string    `json:"author"`
+	Body      string    `json:"body"`
+	CreatedAt time.Time `json:"createdAt"`
+}
+
+// AdminMessageDonorMatch is the donor profile matched by sender email.
+type AdminMessageDonorMatch struct {
+	ID              string  `json:"id"`
+	Name            string  `json:"name"`
+	Email           string  `json:"email"`
+	TotalDonations  float64 `json:"totalDonations"`
+	CausesSupported int     `json:"causesSupported"`
+}
+
+// AdminMessageDonation is a compact donation reference linked to a message.
+type AdminMessageDonation struct {
+	ID           string    `json:"id"`
+	CampaignName string    `json:"campaignName"`
+	Amount       float64   `json:"amount"`
+	Currency     string    `json:"currency"`
+	Status       string    `json:"status"`
+	CreatedAt    time.Time `json:"createdAt"`
+}
+
+// AdminMessage is the admin-facing contact inbox record.
+type AdminMessage struct {
+	ID               string                  `json:"id"`
+	SenderName       string                  `json:"senderName"`
+	SenderEmail      string                  `json:"senderEmail"`
+	Subject          string                  `json:"subject"`
+	Body             string                  `json:"body"`
+	Status           string                  `json:"status"`
+	Severity         string                  `json:"severity"`
+	AssignedAdmin    string                  `json:"assignedAdmin"`
+	ReceivedAt       time.Time               `json:"receivedAt"`
+	UpdatedAt        time.Time               `json:"updatedAt"`
+	Source           string                  `json:"source"`
+	DonorMatch       *AdminMessageDonorMatch `json:"donorMatch,omitempty"`
+	RelatedDonations []AdminMessageDonation  `json:"relatedDonations"`
+	Notes            []AdminMessageNote      `json:"notes"`
+}
+
+// AdminMessageSummary provides inbox status rollups.
+type AdminMessageSummary struct {
+	UnreadCount   int `json:"unreadCount"`
+	PendingCount  int `json:"pendingCount"`
+	RepliedCount  int `json:"repliedCount"`
+	ResolvedCount int `json:"resolvedCount"`
+	TotalCount    int `json:"totalCount"`
+}

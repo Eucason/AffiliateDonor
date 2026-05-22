@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import type { FormEvent } from 'react'
 import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, Send } from 'lucide-react'
 import Card from '@/components/molecules/Card'
 import Input from '@/components/atoms/Input'
 import Button from '@/components/atoms/Button'
 import { pageTransition, slideUp } from '@/utils/motionVariants'
+import { contactAPI } from '@/services/contactAPI'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -14,15 +16,23 @@ export default function ContactPage() {
     message: '',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    setIsSubmitting(false)
-    alert('Message sent successfully!')
-    setFormData({ name: '', email: '', subject: '', message: '' })
+    setSubmitStatus('idle')
+
+    try {
+      await contactAPI.submitMessage(formData)
+      setSubmitStatus('success')
+      setFormData({ name: '', email: '', subject: '', message: '' })
+    } catch (error) {
+      console.error('Contact message submit failed:', error)
+      setSubmitStatus('error')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -144,6 +154,18 @@ export default function ContactPage() {
                   <Send className="w-5 h-5 mr-2" />
                   Send Message
                 </Button>
+
+                {submitStatus === 'success' && (
+                  <p className="rounded-lg bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
+                    Message sent successfully. Our team will follow up soon.
+                  </p>
+                )}
+
+                {submitStatus === 'error' && (
+                  <p className="rounded-lg bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+                    We could not send your message. Please try again.
+                  </p>
+                )}
               </form>
             </Card>
           </div>

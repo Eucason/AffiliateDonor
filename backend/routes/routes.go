@@ -27,6 +27,14 @@ func SetupDonationRoutes(rg *gin.RouterGroup) {
 	}
 }
 
+// SetupContactRoutes sets up public contact message routes.
+func SetupContactRoutes(rg *gin.RouterGroup) {
+	contact := rg.Group("/contact")
+	{
+		contact.POST("/messages", handlers.SubmitContactMessage)
+	}
+}
+
 // SetupProductRoutes sets up product/shopping routes
 func SetupProductRoutes(rg *gin.RouterGroup) {
 	products := rg.Group("/products")
@@ -64,7 +72,7 @@ func SetupUserRoutes(rg *gin.RouterGroup) {
 	{
 		// All user routes require authentication
 		users.Use(middleware.AuthMiddleware())
-		
+
 		users.GET("/me", handlers.GetCurrentUser)
 		users.GET("/me/donations", handlers.GetUserDonations)
 		users.GET("/me/impact", handlers.GetUserImpact)
