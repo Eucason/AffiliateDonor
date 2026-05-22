@@ -73,6 +73,9 @@ func main() {
 
 		// Blogs
 		routes.SetupBlogRoutes(api)
+
+		// Admin
+		routes.SetupAdminRoutes(api)
 	}
 
 	// WebSocket for real-time updates
