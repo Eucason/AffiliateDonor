@@ -19,6 +19,8 @@ import AdminBlogsPage from './pages/Admin/AdminBlogsPage'
 import AdminBlogCreatePage from './pages/Admin/AdminBlogCreatePage'
 import AdminBlogEditPage from './pages/Admin/AdminBlogEditPage'
 import AdminSearchPage from './pages/Admin/AdminSearchPage'
+import AdminUserDetailsPage from './pages/Admin/AdminUserDetailsPage'
+import AdminUsersPage from './pages/Admin/AdminUsersPage'
 import AboutPage from './pages/About/AboutPage'
 import MissionPage from './pages/Mission/MissionPage'
 import PartnersPage from './pages/Partners/PartnersPage'
@@ -92,8 +94,8 @@ function App() {
                   <Route path="/admin/content/about" element={adminPlaceholder('/admin/content/about')} />
                   <Route path="/admin/content/footer" element={adminPlaceholder('/admin/content/footer')} />
                   <Route path="/admin/media" element={adminPlaceholder('/admin/media')} />
-                  <Route path="/admin/users" element={adminPlaceholder('/admin/users')} />
-                  <Route path="/admin/users/:id" element={adminPlaceholder('/admin/users/:id')} />
+                  <Route path="/admin/users" element={<AdminUsersPage />} />
+                  <Route path="/admin/users/:id" element={<AdminUserDetailsPage />} />
                   <Route path="/admin/messages" element={adminPlaceholder('/admin/messages')} />
                   <Route path="/admin/messages/:id" element={adminPlaceholder('/admin/messages/:id')} />
                   <Route path="/admin/products/affiliate" element={adminPlaceholder('/admin/products/affiliate')} />
